@@ -5,11 +5,14 @@
   <?php $bcvLive = (new Setting())->getBcvRateAuto(); $bsHoy = $order['total_usd'] * $bcvLive; $amount_usd = floatval($order['total_usd']); $amount_ves = floatval($bsHoy); ?>
 <p><strong>Total:</strong> $<?=Utils::money($order['total_usd'])?> / Bs. <?=Utils::money($order['total_ves'])?> <span class="small">(Bs hoy: <?=Utils::money($bsHoy)?>)</span></p>
   <?php
-  $remaining = isset($remaining) ? (int)$remaining : 0; ?>
+  $remaining = isset($remaining) ? (int)$remaining : 0;
+  $expiry_ts = time() + $remaining;
+  ?>
 <p><strong>Estado:</strong> <span class="tag"><?=$order['status']?></span></p>
 <?php if ($order['status']==='pendiente'): ?>
 <div id="countdownBox" style="margin:8px 0 0 0; padding:10px 12px; border:1px solid #fecaca; background:#fee2e2; color:#b91c1c; border-radius:12px;">
-  Tiempo restante para pagar: <strong><span id="countdown" data-seconds="<?=$remaining?>"></span></strong>
+  Tiempo restante para pagar: <strong><span id="countdown" data-expiry="<?=$expiry_ts?>"></span></strong>
+  <div id="countdownProgress" class="cd-progress"><span></span></div>
 </div>
 <?php endif; ?>
   <p><a class="btn" href="/orden/<?=$order['code']?>/comprobante">Ver comprobante</a> 
@@ -260,10 +263,16 @@
   function fmt(n){ return n<10?('0'+n):(''+n); }
   var cd = document.getElementById('countdown');
   if (cd){
-    var s = parseInt(cd.getAttribute('data-seconds')||'0',10);
+    var expiry = parseInt(cd.getAttribute('data-expiry')||'0',10);
+    var bar = document.querySelector('#countdownProgress span');
+    var total = Math.max(1, expiry - Math.floor(Date.now()/1000));
+    if (bar){ bar.style.width = '100%'; }
     function tick(){
+      var now = Math.floor(Date.now()/1000);
+      var s = expiry - now;
       if (s <= 0){
         cd.textContent = '00:00';
+        if (bar){ bar.style.width = '0%'; }
         // disable payment form
         var form = document.querySelector('form[action*="/pago"]');
         if (form){
@@ -277,7 +286,8 @@
       }
       var m = Math.floor(s/60), ss = s%60;
       cd.textContent = fmt(m)+':'+fmt(ss);
-      s--; setTimeout(tick, 1000);
+      if (bar){ bar.style.width = ((s/total)*100)+'%'; }
+      setTimeout(tick, 1000);
     }
     tick();
   }
