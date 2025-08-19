@@ -1,6 +1,8 @@
+<div class="order-page">
 <h2>Orden <?=$order['code']?></h2>
 <p class="section-subtitle order-sub">Revisa el estado de tu orden y sube el comprobante de pago si aún está pendiente.</p>
-<div class="card">
+<div class="order-grid">
+<div class="card order-summary">
   <p><strong>Cliente:</strong> <?=Utils::e($order['buyer_name'])?> — <?=Utils::e($order['buyer_email'])?> — <?=Utils::e($order['buyer_phone'])?></p>
   <?php $bcvLive = (new Setting())->getBcvRateAuto(); $bsHoy = $order['total_usd'] * $bcvLive; $amount_usd = floatval($order['total_usd']); $amount_ves = floatval($bsHoy); ?>
 <p><strong>Total:</strong> $<?=Utils::money($order['total_usd'])?> / Bs. <?=Utils::money($order['total_ves'])?> <span class="small">(Bs hoy: <?=Utils::money($bsHoy)?>)</span></p>
@@ -17,8 +19,8 @@
 <?php endif; ?>
   <p><a class="btn" href="/orden/<?=$order['code']?>/comprobante">Ver comprobante</a> 
      <a class="btn" href="/orden/<?=$order['code']?>/comprobante.pdf">Descargar PDF</a></p>
-</div>
-<div class="card">
+  </div>
+<div class="card order-tickets">
   <h3 class="card-title">Boletos</h3>
   <table class="table card-table">
     <tr><th>Rifa</th><th>#</th></tr>
@@ -30,13 +32,14 @@
     <?php endforeach; ?>
   </table>
   </div>
+</div>
 <?php if (!empty($_GET['uploaded'])): ?>
   <div class="alert alert-success" id="paymentUploadedMsg">¡Comprobante recibido! Está en revisión.</div>
   <script>
     setTimeout(function(){ var el=document.getElementById('paymentUploadedMsg'); if(el){ el.style.display='none'; } }, 5000);
   </script>
 <?php endif; ?>
-<div class="card">
+<div class="card order-payment">
   <h3 class="card-title">Pago</h3>
   <?php if ($order['status'] === 'pendiente'): ?>
   <style>
@@ -151,6 +154,7 @@
       <?php endforeach; ?>
     </table>
   <?php endif; ?>
+</div>
 </div>
 
 

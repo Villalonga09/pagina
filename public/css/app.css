@@ -198,6 +198,15 @@ h1,h2,h3,h4{color:var(--text)}
 
 /* --- Airtm-like header & typography @ 1755259968 --- */
 html, body { font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Arial, "Apple Color Emoji", "Segoe UI Emoji"; }
+
+/* Order detail page layout */
+.order-page h2{margin:0 0 8px}
+.order-page .order-sub{display:block;margin:0 0 24px;opacity:.85}
+.order-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:24px}
+@media(max-width:768px){.order-grid{grid-template-columns:1fr}}
+.order-page .card{margin-bottom:24px}
+.order-summary p{margin:8px 0}
+.order-payment{margin-top:16px}
 h1,h2,h3,h4,h5 { font-family: Sora, Inter, system-ui, sans-serif; letter-spacing: .01em; }
 h1 { font-weight: 800; font-size: clamp(32px, 5vw, 56px); line-height: 1.08; }
 h2 { font-weight: 700; font-size: clamp(24px, 3vw, 34px); line-height: 1.15; }
