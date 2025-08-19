@@ -147,15 +147,15 @@ label{font-size:13px;color:var(--muted);margin-bottom:6px;display:block}
 [data-theme="light"] .input::placeholder{color:#94a3b8}
 [data-theme="light"] .input:focus{outline:none; border-color:var(--accent); box-shadow:0 0 0 3px var(--ring)}
 
-[data-theme="light"] .btn{
-  border-radius:12px;
-  padding:10px 14px;
-  border:1px solid var(--border);
-  background:#f8fafc;
-  color:var(--text);
-  transition:background .15s, transform .05s;
-}
-[data-theme="light"] .btn:hover{background:#eef2ff}
+[data-theme="light"] .btn{ 
+  border-radius:12px; 
+  padding:10px 14px; 
+  border:1px solid var(--border); 
+  background:#f8fafc; 
+  color:var(--text); 
+  transition:background .15s, transform .05s; 
+} 
+[data-theme="light"] .btn:hover{background:#eef2ff} 
 [data-theme="light"] .btn:active{transform:translateY(1px)}
 
 [data-theme="light"] .btn-primary{
@@ -629,3 +629,28 @@ h2 { font-weight: 700; font-size: clamp(24px, 3vw, 34px); line-height: 1.15; }
 .modal-content img{display:block;max-width:90vw;max-height:90vh;}
 .modal-close{position:absolute;top:6px;right:8px;border:0;background:#fff;width:32px;height:32px;border-radius:9999px;cursor:pointer;box-shadow:0 1px 6px rgba(0,0,0,.2);}
 .linkish{cursor:pointer;text-decoration:underline;}
+
+/* ====== Order Page Layout ====== */
+.order-page{
+  max-width:960px;
+  margin:0 auto;
+  padding:24px;
+}
+.order-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+  gap:24px;
+}
+.order-summary,
+.order-tickets,
+.order-payment{
+  padding:16px;
+  margin-bottom:24px;
+}
+.order-sub{
+  font-size:14px;
+  color:var(--muted);
+}
+@media (max-width:640px){
+  .order-grid{grid-template-columns:1fr;}
+}
