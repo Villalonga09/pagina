@@ -95,7 +95,7 @@
             <td><?= Utils::e($p['reference']) ?></td>
             <td>
               <?php if (!empty($p['receipt_path'])): ?>
-                <img src="/file/receipt/<?= Utils::e($p['receipt_path']) ?>" alt="Comprobante" class="receipt-thumb">
+                <button type="button" class="btn-slim view-receipt" data-img="/file/receipt/<?= Utils::e($p['receipt_path']) ?>">Ver comprobante</button>
               <?php else: ?>
                 —
               <?php endif; ?>
@@ -103,6 +103,42 @@
           </tr>
         <?php endforeach; ?>
       </table>
+
+      <div id="receiptModal" class="modal" aria-hidden="true" role="dialog" aria-label="Comprobante de pago">
+        <div id="receiptModalBackdrop" class="modal-backdrop"></div>
+        <div class="modal-content">
+          <button id="receiptModalClose" type="button" class="modal-close" aria-label="Cerrar">×</button>
+          <img id="receiptModalImg" src="" alt="Comprobante">
+        </div>
+      </div>
+
+      <script>
+      (function(){
+        var modal = document.getElementById('receiptModal');
+        var modalImg = document.getElementById('receiptModalImg');
+        var modalClose = document.getElementById('receiptModalClose');
+        var modalBackdrop = document.getElementById('receiptModalBackdrop');
+
+        document.querySelectorAll('.view-receipt').forEach(function(btn){
+          btn.addEventListener('click', function(){
+            var src = this.getAttribute('data-img');
+            modalImg.src = src;
+            modal.classList.add('show');
+            modal.setAttribute('aria-hidden','false');
+          });
+        });
+
+        function closeModal(){
+          modal.classList.remove('show');
+          modal.setAttribute('aria-hidden','true');
+          setTimeout(function(){ modalImg.src=''; }, 200);
+        }
+
+        if (modalClose) modalClose.addEventListener('click', closeModal);
+        if (modalBackdrop) modalBackdrop.addEventListener('click', closeModal);
+        document.addEventListener('keydown', function(e){ if(e.key==='Escape'){ closeModal(); }});
+      })();
+      </script>
     <?php endif; ?>
 
     <script>
