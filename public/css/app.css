@@ -586,3 +586,11 @@ h2 { font-weight: 700; font-size: clamp(24px, 3vw, 34px); line-height: 1.15; }
 }
 .verification-info:hover .tooltip,
 .verification-info:focus-within .tooltip{ display:block; }
+
+/* Order details spacing */
+.card-title{margin:0 0 8px;font-weight:600;}
+.card-table{margin-top:8px;}
+.alert{margin:8px 0 0;padding:10px 12px;border-radius:12px;border:1px solid transparent;}
+.alert-warning{border-color:#fecaca;background:#fee2e2;color:#b91c1c;}
+.alert-success{border-color:var(--success);background:rgba(52,211,153,.15);color:var(--success);margin-bottom:12px;}
+.mt-16{margin-top:16px;}
