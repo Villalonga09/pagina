@@ -79,6 +79,10 @@ $r = new Raffle(); $t = new Ticket(); $o = new Order(); $s = new Setting(); $a =
     $o = new Order();
     $order = $o->findByCode($code);
     if (!$order) { $this->view('public/error.php',['message'=>'Orden inválida']); return; }
+    if ($order['status'] !== 'pendiente') {
+      $this->view('public/error.php',['message'=>'La orden ya no acepta pagos']);
+      return;
+    }
 
     $method = $_POST['method'] ?? 'pago_movil';
     $amount_ves = floatval($_POST['amount_ves'] ?? 0);
