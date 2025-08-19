@@ -121,6 +121,7 @@ class SettingsController extends Controller {
 
   public function updateRate() {
     if (!Auth::check()) { $this->redirect('/admin/login'); }
+    CSRF::validate();
     $s = new Setting();
     $rate = (new Setting())->getBcvRateAuto();
     $s->set('bcv_rate', (string)$rate);
