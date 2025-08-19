@@ -39,6 +39,7 @@
 <?php endif; ?>
 <div class="card">
   <h3>Pago</h3>
+  <?php if ($order['status'] === 'pendiente'): ?>
   <style>
   /* paydetails styles */
   .paybox{margin-top:8px; padding:10px 12px; border:1px solid #eee; border-radius:12px; background:#fafafa}
@@ -109,6 +110,17 @@
     </div>
     <p><button class="btn btn-primary">Enviar pago</button></p>
   </form>
+  <?php else: ?>
+  <div style="margin:8px 0 0 0; padding:10px 12px; border:1px solid #fecaca; background:#fee2e2; color:#b91c1c; border-radius:12px;">
+    <?php if ($order['status'] === 'aprobado'): ?>
+      Esta orden ya fue aprobada. ¡Gracias por tu pago!
+    <?php elseif ($order['status'] === 'rechazado'): ?>
+      Esta orden fue rechazada. Si crees que es un error, contacta al soporte.
+    <?php else: ?>
+      Esta orden ya no está pendiente.
+    <?php endif; ?>
+  </div>
+  <?php endif; ?>
   <?php if (!empty($payments)): ?>
     <h4>Pagos enviados</h4>
     <ul>
