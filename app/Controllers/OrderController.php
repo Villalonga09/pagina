@@ -99,23 +99,27 @@ $r = new Raffle(); $t = new Ticket(); $o = new Order(); $s = new Setting(); $a =
     $bcvLive = (new Setting())->getBcvRateAuto();
     $amount_usd = floatval($order['total_usd']);
     $amount_ves = floatval($order['total_usd'] * $bcvLive);
-if (!empty($_FILES['receipt']['name'])) {
-      $allowed = ['image/jpeg'=>'jpg','image/png'=>'png','image/webp'=>'webp'];
-      $type = mime_content_type($_FILES['receipt']['tmp_name']);
-      $size = $_FILES['receipt']['size'];
-      if (!isset($allowed[$type]) || $size > 5*1024*1024) {
-        $this->view('public/error.php',['message'=>'Archivo inválido. Solo jpg/png/webp, máximo 5MB.']);
-        return;
-      }
-      $ext = $allowed[$type];
-      $fname = 'order_' . $order['code'] . '_' . time() . '.' . $ext;
-      $dest = UPLOADS_PATH . '/' . $fname;
-      if (!move_uploaded_file($_FILES['receipt']['tmp_name'], $dest)) {
-        $this->view('public/error.php',['message'=>'Error subiendo archivo.']);
-        return;
-      }
-      $receipt_path = $fname;
+
+    if (empty($_FILES['receipt']['name'] ?? '')) {
+      $this->view('public/error.php', ['message' => 'Debe adjuntar el comprobante.']);
+      return;
     }
+
+    $allowed = ['image/jpeg'=>'jpg','image/png'=>'png','image/webp'=>'webp'];
+    $type = mime_content_type($_FILES['receipt']['tmp_name']);
+    $size = $_FILES['receipt']['size'];
+    if (!isset($allowed[$type]) || $size > 5*1024*1024) {
+      $this->view('public/error.php',['message'=>'Archivo inválido. Solo jpg/png/webp, máximo 5MB.']);
+      return;
+    }
+    $ext = $allowed[$type];
+    $fname = 'order_' . $order['code'] . '_' . time() . '.' . $ext;
+    $dest = UPLOADS_PATH . '/' . $fname;
+    if (!move_uploaded_file($_FILES['receipt']['tmp_name'], $dest)) {
+      $this->view('public/error.php',['message'=>'Error subiendo archivo.']);
+      return;
+    }
+    $receipt_path = $fname;
 
     $pid = (new Payment())->create($order['id'], [
       'method'=>$method, 'amount_ves'=>$amount_ves, 'amount_usd'=>$amount_usd,
