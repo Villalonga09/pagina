@@ -84,9 +84,9 @@ class Ticket extends BaseModel {
     if (empty($ticket_ids)) return;
     $in = implode(',', array_fill(0, count($ticket_ids), '?'));
     $params = $ticket_ids;
-    $params[] = $order_id;
+    array_unshift($params, $order_id);
     $st = $this->db->prepare("UPDATE tickets SET order_id=? WHERE id IN ($in)");
-    // reorder params: first order_id then list
+    $st->execute($params);
   }
   public function ticketsByOrder($order_id) {
     $st = $this->db->prepare("SELECT t.*, r.title FROM tickets t JOIN raffles r ON r.id=t.raffle_id WHERE t.order_id=?");
