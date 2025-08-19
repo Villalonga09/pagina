@@ -94,11 +94,34 @@
   </form>
   <?php if (!empty($payments)): ?>
     <h4>Pagos enviados</h4>
-    <ul>
-    <?php foreach ($payments as $p): ?>
-      <li><?=$p['method']?> — <?=$p['status']?> — ref: <?=Utils::e($p['reference'])?> <?php if($p['receipt_path']): ?> — <a href="/file/receipt/<?=Utils::e($p['receipt_path'])?>">ver archivo</a><?php endif; ?></li>
-    <?php endforeach; ?>
-    </ul>
+    <table class="table">
+      <tr>
+        <th>Método</th>
+        <th>Estado</th>
+        <th>Referencia</th>
+        <th>Comprobante</th>
+      </tr>
+      <?php foreach ($payments as $p):
+        $stClass = [
+          'pendiente' => 'badge-warning',
+          'aprobado' => 'badge-success',
+          'rechazado' => 'badge-danger'
+        ][$p['status']] ?? 'badge';
+      ?>
+        <tr>
+          <td><?=Utils::e($p['method'])?></td>
+          <td><span class="badge <?=$stClass?>"><?=Utils::e($p['status'])?></span></td>
+          <td><?=Utils::e($p['reference'])?></td>
+          <td>
+            <?php if ($p['receipt_path']): ?>
+              <img src="/file/receipt/<?=Utils::e($p['receipt_path'])?>" alt="Comprobante" class="receipt-thumb">
+            <?php else: ?>
+              —
+            <?php endif; ?>
+          </td>
+        </tr>
+      <?php endforeach; ?>
+    </table>
   <?php endif; ?>
 </div>
 
@@ -249,6 +272,13 @@
       }
     });
   }
+
+  document.querySelectorAll('.receipt-thumb').forEach(function(img){
+    img.addEventListener('click', function(){
+      dataUrl = this.src;
+      openModal();
+    });
+  });
 })();
 </script>
 
