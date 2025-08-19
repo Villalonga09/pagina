@@ -49,6 +49,7 @@
   .modal-close{position:absolute; top:6px; right:8px; border:0; background:#fff; width:32px; height:32px; border-radius:9999px; cursor:pointer; box-shadow:0 1px 6px rgba(0,0,0,.2)}
   .linkish{cursor:pointer; text-decoration:underline}
   </style>
+  <div class="security-notice"><span class="lock-icon">🔒</span> Tus datos se transmiten de forma segura</div>
   <a id="pago"></a>
 <form action="/orden/<?=$order['code']?>/pago" method="post" enctype="multipart/form-data">
     <?= CSRF::field() ?>
@@ -64,7 +65,14 @@
         </div>
         <div id="vesGroup" style="display:none"><label>Monto Bs.</label><input class="input" name="amount_ves" value="<?= number_format($amount_ves, 2, '.', '') ?>" readonly></div>
         <div id="usdGroup" style="display:none"><label>Monto $</label><input class="input" name="amount_usd" value="<?= number_format($amount_usd, 2, '.', '') ?>" readonly></div>
-        <div><label>Referencia</label><input class="input" name="reference"><p class="small" style="margin-top:6px; opacity:.8">Al enviar el pago, la verificación puede tomar hasta 2 horas.</p></div>
+        <div>
+          <label>Referencia</label>
+          <input class="input" name="reference">
+          <div class="verification-info small">
+            <span class="info-icon" tabindex="0">ℹ️</span>
+            <div class="tooltip">La verificación se realiza manualmente y puede tardar hasta 2 horas.</div>
+          </div>
+        </div>
       </div>
       <div class="col-right" style="display:grid; gap:12px">
         <div id="paymentDetails" class="small"></div>
