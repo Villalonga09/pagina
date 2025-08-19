@@ -13,7 +13,11 @@
       <label>Tasa BCV</label>
       <input class="input" name="bcv_rate" value="<?=Utils::e($bcv)?>" />
       <p class="small">Puedes configurar SMTP en config/.env para envío de correos.</p>
-      <p><a class="btn btn-ghost" href="/admin/ajustes/actualizar-bcv">Actualizar desde API</a></p>
+      <p>
+        <button class="btn btn-ghost" type="submit" formaction="/admin/ajustes/actualizar-bcv" formmethod="post">
+          Actualizar desde API
+        </button>
+      </p>
     </div>
     <hr style="border-color:var(--border);opacity:.5;margin:16px 0">
     <div class="form-group">

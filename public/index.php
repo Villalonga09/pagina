@@ -45,5 +45,5 @@ $router->post('/admin/pagos/{id}/rechazar', ['PaymentsController','reject']);
 $router->get('/admin/reportes', ['ReportsController','index']);
 $router->get('/admin/ajustes', ['SettingsController','index']);
 $router->post('/admin/ajustes', ['SettingsController','save']);
-$router->get('/admin/ajustes/actualizar-bcv', ['SettingsController','updateRate']);
+$router->post('/admin/ajustes/actualizar-bcv', ['SettingsController','updateRate']);
 $router->dispatch();
