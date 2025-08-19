@@ -11,15 +11,15 @@
   $expiry_ts = time() + $remaining;
   ?>
 <p><strong>Estado:</strong> <span class="tag"><?=$order['status']?></span></p>
-<?php if ($order['status']==='pendiente'): ?>
-<div id="countdownBox" class="alert countdown-box countdown-box--minimal" role="status" aria-live="polite">
-  Tiempo restante para pagar: <strong><span id="countdown" data-expiry="<?=$expiry_ts?>" aria-live="polite"></span></strong>
-  <div id="countdownProgress" class="cd-progress" role="progressbar" aria-label="Tiempo restante" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100"><span></span></div>
-</div>
-<?php endif; ?>
-  <p><a class="btn" href="/orden/<?=$order['code']?>/comprobante">Ver comprobante</a> 
-     <a class="btn" href="/orden/<?=$order['code']?>/comprobante.pdf">Descargar PDF</a></p>
+  <?php if ($order['status']==='pendiente'): ?>
+  <div id="countdownBox" class="alert countdown-box countdown-box--minimal" role="status" aria-live="polite">
+    Tiempo restante para pagar: <strong><span id="countdown" data-expiry="<?=$expiry_ts?>" aria-live="polite"></span></strong>
+    <div id="countdownProgress" class="cd-progress" role="progressbar" aria-label="Tiempo restante" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100"><span></span></div>
   </div>
+  <?php endif; ?>
+  <img src="" alt="Comprobante" class="receipt-thumb">
+  </div>
+  <br>
 <div class="card order-tickets">
   <h3 class="card-title">Boletos</h3>
   <table class="table card-table">
@@ -32,6 +32,7 @@
     <?php endforeach; ?>
   </table>
   </div>
+  <br>
 </div>
 <?php if (!empty($_GET['uploaded'])): ?>
   <div class="alert alert-success" id="paymentUploadedMsg">¡Comprobante recibido! Está en revisión.</div>
@@ -62,7 +63,6 @@
           <label>Referencia</label>
           <input class="input" name="reference">
           <div class="verification-info verification-info--badge small" role="note">
-            <span class="info-icon" tabindex="0" aria-label="Información de verificación" aria-describedby="verifTip">ℹ️</span>
             <div id="verifTip" class="tooltip" role="tooltip">La verificación se realiza manualmente y puede tardar hasta 2 horas.</div>
           </div>
         </div>
