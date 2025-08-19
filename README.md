@@ -19,7 +19,10 @@ Proyecto listo para subir a hosting compartido (Apache + PHP 8.2 + MySQL).
 5. Asegura permisos de escritura para:
    - `storage/uploads/receipts`
    - `storage/logs`
-6. Accede a `/admin` y entra con: **admin@example.com / Admin123!**
+6. Define `ADMIN_SETUP_TOKEN` en `config/.env` y crea el primer administrador visitando  
+   `/admin/seed-admin?token=EL_TOKEN&email=admin@tu-dominio.com&password=TuClaveSegura`.
+7. Elimina `ADMIN_SETUP_TOKEN` (y las credenciales de seed si las agregaste) y accede a  
+   `/admin` con las credenciales creadas.
 
 ## Notas de producción
 - Si la conexión MySQL falla, se mostrará una página de mantenimiento y `/health` devolverá 500.
@@ -29,7 +32,13 @@ Proyecto listo para subir a hosting compartido (Apache + PHP 8.2 + MySQL).
 - **QR**: Se usan imágenes de `api.qrserver.com` (sin clave). Puedes reemplazar por una librería local si lo prefieres.
 
 ## Esquema de BD y seed
-Ver `database.sql`. Se crea un usuario admin por defecto y 2 rifas de ejemplo. Para cada rifa nueva, el sistema genera los boletos secuencialmente.
+Ver `database.sql`. Se crean 2 rifas de ejemplo. Para cada rifa nueva, el sistema genera los boletos secuencialmente.
+
+## Creación de administradores
+1. Establece `ADMIN_SETUP_TOKEN` en `config/.env`. Opcionalmente puedes definir `ADMIN_SEED_EMAIL` y `ADMIN_SEED_PASSWORD`.
+2. Visita `/admin/seed-admin?token=EL_TOKEN` agregando `email` y `password` como parámetros si no los definiste en el `.env`.
+3. Tras el mensaje de éxito, elimina `ADMIN_SETUP_TOKEN` y las credenciales de seed para deshabilitar la ruta.
+4. Ingresa a `/admin` con las credenciales creadas.
 
 ## Rutas principales
 **Público**

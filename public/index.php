@@ -27,7 +27,9 @@ $router->get('/file/receipt/{name}', ['FileController','receipt']);
 $router->get('/file/site/{name}', ['FileController','site']);
 
 // Admin
-$router->get('/admin/seed-admin', ['AuthController','seedAdmin']);
+if (!empty($_ENV['ADMIN_SETUP_TOKEN'])) {
+  $router->get('/admin/seed-admin', ['AuthController','seedAdmin']);
+}
 $router->get('/admin/login', ['AuthController','loginForm']);
 $router->post('/admin/login', ['AuthController','login']);
 $router->post('/admin/logout', ['AuthController','logout']);

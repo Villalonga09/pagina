@@ -98,9 +98,6 @@ CREATE TABLE settings (
 ) ENGINE=InnoDB;
 
 -- Seeds
-INSERT INTO users (name,email,password_hash) VALUES
-('Admin','admin@example.com','$2b$12$burdDAqBZOpClSAhHz5sgebvOzvm8trug2uX469bZCfPJt102i/N2');
-
 INSERT INTO raffles (title,description,prize,price_usd,price_ves,total_tickets,sold_tickets,banner_path,status,starts_at,ends_at) VALUES
 ('Rifa iPhone 14','Participa por un iPhone 14 nuevo','iPhone 14',5.00,200.00,100,0,NULL,'activa',NOW(),DATE_ADD(NOW(), INTERVAL 30 DAY)),
 ('Rifa PlayStation 5','Gana una PS5 edición digital','PlayStation 5',4.00,160.00,80,0,NULL,'activa',NOW(),DATE_ADD(NOW(), INTERVAL 30 DAY));
@@ -125,9 +122,4 @@ CALL seed_tickets(@rid1, 100);
 CALL seed_tickets(@rid2, 80);
 DROP PROCEDURE seed_tickets;
 
--- Tasa BCV por defecto
 INSERT INTO settings (skey,svalue) VALUES ('bcv_rate','40');
-
--- Extra admin seed
-INSERT INTO users (name,email,password_hash) VALUES
-('Villalonga','villalonga.2000@gmail.com','$2b$12$hsQJut7pPNnCdbzv1c8jiuV6.wR8rasosRbYs9bay7yV0qqf8ZZrW');

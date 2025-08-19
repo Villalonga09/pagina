@@ -46,9 +46,14 @@ class AuthController extends Controller {
       echo "Forbidden";
       return;
     }
-    $email = 'villalonga.2000@gmail.com';
-    $password = 'Rich@rd932';
-    $name = 'Villalonga Admin';
+    $email = $_GET['email'] ?? ($_ENV['ADMIN_SEED_EMAIL'] ?? '');
+    $password = $_GET['password'] ?? ($_ENV['ADMIN_SEED_PASSWORD'] ?? '');
+    $name = $_GET['name'] ?? ($_ENV['ADMIN_SEED_NAME'] ?? 'Admin');
+
+    if (!$email || !$password) {
+      echo "Missing email or password";
+      return;
+    }
 
     $u = (new User())->findByEmail($email);
     if ($u) { echo "User already exists (id={$u['id']})"; return; }
