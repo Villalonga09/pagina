@@ -1,5 +1,9 @@
 <h2>Mis boletos</h2>
+<?php if (!empty($justUploaded)): ?>
+<p class="section-subtitle my-sub">Para ver el estado de su boleto, ingrese su Cédula/DNI.</p>
+<?php else: ?>
 <p class="section-subtitle my-sub">Encuentra tus participaciones ingresando tu Cédula/DNI.</p>
+<?php endif; ?>
 <div class="card">
   <form method="get">
     <div class="form-row">
@@ -14,7 +18,7 @@
     <?php foreach ($tickets as $t): $url = Utils::url('/orden/'.$t['order_code']); ?>
     <div class="card" style="margin:12px">
       <div style="margin-bottom:6px"><strong><?=Utils::e($t['title'])?></strong> — #<?=$t['number']?></div>
-      <?php $isPending = ($t['order_status']==='pendiente'); ?>
+      <?php $isPending = ($t['order_status']==='pendiente'); $hasReceipt = !empty($t['has_receipt']); ?>
       <div class="small" style="margin:6px 0">
         Estado:
         <?php if($t['order_status']==='pagado'): ?>
@@ -29,7 +33,7 @@
         $init_mm = intdiv($rem, 60); $init_ss = $rem % 60;
         $init_text = sprintf('%02d:%02d', $init_mm, $init_ss);
       ?>
-      <?php if ($isPending): ?>
+      <?php if ($isPending && !$hasReceipt): ?>
         <div class="small" style="margin:6px 0">
           Tiempo restante: <span class="countdown" data-seconds="<?=$rem?>"><?=$init_text?></span>
         </div>
@@ -41,10 +45,18 @@
         </a>
       <?php elseif ($t['order_status']==='pagado'): ?>
         <p class="small" style="color:var(--success); margin:6px 0">Pago aprobado.</p>
+      <?php elseif ($isPending && $hasReceipt): ?>
+        <p class="small" style="color:#ca8a04; margin:6px 0">Pago en revisión.</p>
       <?php else: ?>
         <p class="small" style="color:var(--danger); margin:6px 0">Orden expirada o rechazada.</p>
       <?php endif; ?>
-      <p class="small" style="margin-top:8px">Orden: <strong><?=$t['order_code']?></strong></p>
+      <p class="small" style="margin-top:8px">Orden: 
+        <?php if ($hasReceipt): ?>
+          <a href="/orden/<?=$t['order_code']?>/comprobante.pdf"><strong><?=$t['order_code']?></strong></a>
+        <?php else: ?>
+          <strong><?=$t['order_code']?></strong>
+        <?php endif; ?>
+      </p>
     </div>
     <?php endforeach; ?>
   </div>
