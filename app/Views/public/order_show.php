@@ -10,7 +10,7 @@
   ?>
 <p><strong>Estado:</strong> <span class="tag"><?=$order['status']?></span></p>
 <?php if ($order['status']==='pendiente'): ?>
-<div id="countdownBox" style="margin:8px 0 0 0; padding:10px 12px; border:1px solid #fecaca; background:#fee2e2; color:#b91c1c; border-radius:12px;">
+<div id="countdownBox" class="alert alert-warning">
   Tiempo restante para pagar: <strong><span id="countdown" data-expiry="<?=$expiry_ts?>"></span></strong>
   <div id="countdownProgress" class="cd-progress"><span></span></div>
 </div>
@@ -19,8 +19,8 @@
      <a class="btn" href="/orden/<?=$order['code']?>/comprobante.pdf">Descargar PDF</a></p>
 </div>
 <div class="card">
-  <h3>Boletos</h3>
-  <table class="table">
+  <h3 class="card-title">Boletos</h3>
+  <table class="table card-table">
     <tr><th>Rifa</th><th>#</th><th>QR</th></tr>
     <?php require_once APP_PATH . '/Models/Setting.php'; foreach ($items as $it): $url = Utils::url('/orden/'.$order['code']); ?>
       <tr>
@@ -32,16 +32,13 @@
   </table>
   </div>
 <?php if (!empty($_GET['uploaded'])): ?>
-  <style>
-    .alert-success{margin:8px 0 12px;padding:10px 12px;border:1px solid var(--success);background:rgba(52,211,153,.15);color:var(--success);border-radius:12px;}
-  </style>
-  <div class="alert-success" id="paymentUploadedMsg">¡Comprobante recibido! Está en revisión.</div>
+  <div class="alert alert-success" id="paymentUploadedMsg">¡Comprobante recibido! Está en revisión.</div>
   <script>
     setTimeout(function(){ var el=document.getElementById('paymentUploadedMsg'); if(el){ el.style.display='none'; } }, 5000);
   </script>
 <?php endif; ?>
 <div class="card">
-  <h3>Pago</h3>
+  <h3 class="card-title">Pago</h3>
   <?php if ($order['status'] === 'pendiente'): ?>
   <style>
   /* paydetails styles */
@@ -114,7 +111,7 @@
     <p><button class="btn btn-primary">Enviar pago</button></p>
   </form>
   <?php else: ?>
-  <div style="margin:8px 0 0 0; padding:10px 12px; border:1px solid #fecaca; background:#fee2e2; color:#b91c1c; border-radius:12px;">
+  <div class="alert alert-warning">
     <?php if ($order['status'] === 'aprobado'): ?>
       Esta orden ya fue aprobada. ¡Gracias por tu pago!
     <?php elseif ($order['status'] === 'rechazado'): ?>
@@ -125,8 +122,8 @@
   </div>
   <?php endif; ?>
   <?php if (!empty($payments)): ?>
-    <h4>Pagos enviados</h4>
-    <table class="table">
+    <h4 class="card-title mt-16">Pagos enviados</h4>
+    <table class="table card-table">
       <tr>
         <th>Método</th>
         <th>Estado</th>
