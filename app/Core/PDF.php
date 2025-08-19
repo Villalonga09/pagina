@@ -13,7 +13,9 @@ class PDF {
       }
     }
     if ($pdfContent === null) {
-      $text = trim(strip_tags($html));
+      // Remove style/script blocks to avoid exposing raw CSS when Dompdf is absent
+      $clean = preg_replace('#<(style|script)[^>]*>.*?</\\1>#si', '', $html);
+      $text  = trim(strip_tags($clean));
       $pdfContent = self::basicTextPdf($text);
     }
     if (empty($pdfContent)) {

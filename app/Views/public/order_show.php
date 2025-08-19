@@ -21,12 +21,11 @@
 <div class="card">
   <h3 class="card-title">Boletos</h3>
   <table class="table card-table">
-    <tr><th>Rifa</th><th>#</th><th>QR</th></tr>
-    <?php require_once APP_PATH . '/Models/Setting.php'; foreach ($items as $it): $url = Utils::url('/orden/'.$order['code']); ?>
+    <tr><th>Rifa</th><th>#</th></tr>
+    <?php foreach ($items as $it): ?>
       <tr>
         <td><?=Utils::e($it['title'])?></td>
         <td>#<?=$it['number']?></td>
-        <td><img src="https://api.qrserver.com/v1/create-qr-code/?size=80x80&data=<?=urlencode($url)?>" alt="QR"></td>
       </tr>
     <?php endforeach; ?>
   </table>

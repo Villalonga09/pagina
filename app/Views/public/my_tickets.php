@@ -55,9 +55,6 @@
           <p style="margin:8px 0 8px">
             <a class="btn btn-primary" href="/orden/<?= $t['order_code'] ?>#pago" aria-label="Ir a pago" style="margin:6px 0; display:inline-block">Pagar ahora</a>
           </p>
-          <a href="/orden/<?= $t['order_code'] ?>#pago" aria-label="Ir a pago" style="display:inline-block; margin-top:6px">
-            <img src="https://api.qrserver.com/v1/create-qr-code/?size=140x140&data=<?= urlencode($url) ?>" alt="QR">
-          </a>
         <?php elseif ($t['order_status'] === 'pagado'): ?>
           <p class="small" style="color:var(--success); margin:6px 0">Pago aprobado.</p>
         <?php elseif ($isPending && $hasReceipt): ?>

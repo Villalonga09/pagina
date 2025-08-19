@@ -29,7 +29,6 @@ Proyecto listo para subir a hosting compartido (Apache + PHP 8.2 + MySQL).
 - **PDF**: Incluimos un generador básico de respaldo. Para PDF con HTML/CSS completo y adjuntos por correo, agrega `vendor/` con **dompdf** y (opcional) **PHPMailer**:
   - Descarga `dompdf/dompdf` y `phpmailer/phpmailer` con Composer en tu equipo y sube el directorio `vendor/` resultante junto con `vendor/autoload.php`.
   - El sistema detecta automáticamente Dompdf si está disponible.
-- **QR**: Se usan imágenes de `api.qrserver.com` (sin clave). Puedes reemplazar por una librería local si lo prefieres.
 
 ## Esquema de BD y seed
 Ver `database.sql`. Se crean 2 rifas de ejemplo. Para cada rifa nueva, el sistema genera los boletos secuencialmente.
@@ -49,7 +48,7 @@ Ver `database.sql`. Se crean 2 rifas de ejemplo. Para cada rifa nueva, el sistem
 - `POST /orden/{code}/pago` — carga de comprobante (jpg/png/webp máx 5MB).
 - `GET /orden/{code}/comprobante` — HTML del comprobante.
 - `GET /orden/{code}/comprobante.pdf` — PDF (Dompdf si está disponible).
-- `GET /mis-boletos?email=...&code=...` — listado de boletos con QR.
+- `GET /mis-boletos?email=...&code=...` — listado de boletos.
 
 **Admin**
 - `GET /admin/login`, `POST /admin/login`, `POST /admin/logout`
