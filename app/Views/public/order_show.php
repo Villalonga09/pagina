@@ -17,7 +17,6 @@
     <div id="countdownProgress" class="cd-progress" role="progressbar" aria-label="Tiempo restante" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100"><span></span></div>
   </div>
   <?php endif; ?>
-  <img src="" alt="Comprobante" class="receipt-thumb">
   </div>
   <br>
 <div class="card order-tickets">
@@ -76,9 +75,6 @@
           <div class="uploadbox__actions">
             <label for="receiptInput" class="btn-slim uploadbox__button" role="button" tabindex="0">Seleccionar archivo</label>
             <span id="receiptName" class="small uploadbox__filename" aria-live="polite">Ningún archivo seleccionado</span>
-          </div>
-          <div id="receiptPreview" class="uploadbox__preview">
-            <img id="receiptImg" src="" alt="Vista previa del comprobante" class="uploadbox__img">
           </div>
           <!-- Modal para vista previa -->
           <div id="imgModal" class="modal" aria-hidden="true" role="dialog" aria-label="Vista previa del comprobante">
@@ -247,8 +243,6 @@
   // Modal preview logic (only on filename click)
     var input = document.getElementById('receiptInput');
     var nameEl = document.getElementById('receiptName');
-    var preview = document.getElementById('receiptPreview');
-    var previewImg = document.getElementById('receiptImg');
     var modal = document.getElementById('imgModal');
     var modalImg = document.getElementById('modalImg');
     var modalClose = document.getElementById('modalClose');
@@ -278,8 +272,6 @@
         dataUrl = null;
         if (!f){
           if (nameEl){ nameEl.textContent = 'Ningún archivo seleccionado'; nameEl.classList.remove('linkish'); }
-          if (preview){ preview.classList.remove('show'); }
-          if (previewImg){ previewImg.src = ''; }
           return;
         }
         if (nameEl){ nameEl.textContent = f.name + ' (' + Math.round(f.size/1024) + ' KB)'; }
@@ -287,15 +279,11 @@
           var reader = new FileReader();
           reader.onload = function(e){
             dataUrl = e.target.result;
-            if (previewImg){ previewImg.src = dataUrl; }
-            if (preview){ preview.classList.add('show'); }
             if (nameEl){ nameEl.classList.add('linkish'); }
           };
           reader.readAsDataURL(f);
         } else {
           if (nameEl){ nameEl.classList.remove('linkish'); }
-          if (preview){ preview.classList.remove('show'); }
-          if (previewImg){ previewImg.src = ''; }
         }
       });
     }
