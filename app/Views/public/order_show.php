@@ -61,14 +61,14 @@
         <div>
           <label>Referencia</label>
           <input class="input" name="reference">
-          <div class="verification-info small">
-            <span class="info-icon" tabindex="0">ℹ️</span>
-            <div class="tooltip">La verificación se realiza manualmente y puede tardar hasta 2 horas.</div>
+          <div class="verification-info verification-info--badge small" role="note">
+            <span class="info-icon" tabindex="0" aria-label="Información de verificación" aria-describedby="verifTip">ℹ️</span>
+            <div id="verifTip" class="tooltip" role="tooltip">La verificación se realiza manualmente y puede tardar hasta 2 horas.</div>
           </div>
         </div>
       </div>
       <div class="col-right" style="display:grid; gap:12px">
-        <div id="paymentDetails" class="small payment-details payment-details--minimal" role="region" aria-label="Detalles del pago"></div>
+        <div id="paymentDetails" class="small payment-details payment-details--minimal" data-paybox-variant="minimal" role="region" aria-label="Detalles del pago"></div>
         <div class="uploadbox uploadbox--minimal" role="group" aria-labelledby="receiptLabel" aria-describedby="receiptHelp">
           <div id="receiptLabel" class="uploadbox__title">Comprobante</div>
           <p id="receiptHelp" class="small uploadbox__help">Adjunta la imagen del pago (JPG, PNG o WEBP, máx. 5MB).</p>
@@ -187,13 +187,17 @@
     ], JSON_UNESCAPED_UNICODE|JSON_UNESCAPED_SLASHES);
   ?>;
 
-  function copyText(t){
+  function copyText(t, el){
     if (!t) return;
-    try { navigator.clipboard.writeText(t); showToast('Copiado'); }
+    try { navigator.clipboard.writeText(t); }
     catch(e){
       var ta = document.createElement('textarea');
       ta.value = t; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta);
-      showToast('Copiado');
+    }
+    showToast('Copiado');
+    if (el){
+      el.classList.add('copied');
+      setTimeout(function(){ el.classList.remove('copied'); }, 800);
     }
   }
 
@@ -212,22 +216,23 @@
   function renderDetails(key){
     var d = details[key];
     if (!d){ detailsNode.innerHTML = ''; return; }
-      var html = '<div class="paybox" role="list">';
-      html += '<div class="paybox__title">'+ d.title +'</div>';
-      d.rows.forEach(function(r){
-        var label = r[0], val = r[1];
-        html += '<div class="payrow" role="listitem">'
-             +    '<span class="paylabel">'+ label +'</span>'
-             +    '<span class="payvalue" tabindex="0" data-copy="'+ String(val).replace(/"/g,'&quot;') +'" aria-label="Copiar '+ label +'">'+ val +'</span>'
-             +  '</div>';
-      });
-      html += '</div>';
+    var variant = detailsNode.getAttribute('data-paybox-variant') || 'minimal';
+    var html = '<div class="paybox paybox--'+ variant +'" role="list">';
+    html += '<div class="paybox__title">'+ d.title +'</div>';
+    d.rows.forEach(function(r){
+      var label = r[0], val = r[1];
+      html += '<div class="payrow" role="listitem">'
+           +    '<span class="paylabel">'+ label +'</span>'
+           +    '<span class="payvalue" tabindex="0" data-copy="'+ String(val).replace(/"/g,'&quot;') +'" aria-label="Copiar '+ label +'">'+ val +'</span>'
+           +  '</div>';
+    });
+    html += '</div>';
     detailsNode.innerHTML = html;
 
-      detailsNode.querySelectorAll('.payvalue').forEach(function(el){
-        el.addEventListener('click', function(){ copyText(this.getAttribute('data-copy')); });
-        el.addEventListener('keydown', function(e){ if(e.key==='Enter' || e.key===' '){ copyText(this.getAttribute('data-copy')); }});
-      });
+    detailsNode.querySelectorAll('.payvalue').forEach(function(el){
+      el.addEventListener('click', function(){ copyText(this.getAttribute('data-copy'), this); });
+      el.addEventListener('keydown', function(e){ if(e.key==='Enter' || e.key===' '){ copyText(this.getAttribute('data-copy'), this); }});
+    });
   }
 
   function onChange(){
