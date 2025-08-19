@@ -4,7 +4,7 @@ require_once APP_PATH . "/Core/View.php";
 require_once APP_PATH . "/Core/Utils.php";
 require_once APP_PATH . "/Core/CSRF.php";
 require_once APP_PATH . "/Core/PDF.php";
-require_once APP_PATH . "/Core/Database.php"; // <-- Faltaba, usado en show() y myTickets()
+require_once APP_PATH . "/Core/Database.php"; // Usado en show() y myTickets()
 require_once APP_PATH . "/Models/Raffle.php";
 require_once APP_PATH . "/Models/Ticket.php";
 require_once APP_PATH . "/Models/Order.php";
@@ -216,9 +216,12 @@ class OrderController extends Controller {
     }
 
     (new Activity())->log(null, 'create', 'payment', $pid, "Pago registrado para orden {$order['code']}", ['reference' => $reference]);
-    if (session_status() !== PHP_SESSION_ACTIVE) session_start();
+
+    // Marca el flujo "just uploaded" y redirige a Mis Boletos usando la sesión
+    if (session_status() !== PHP_SESSION_ACTIVE) { session_start(); }
     $_SESSION['last_dni'] = $order['buyer_dni'];
     $_SESSION['just_uploaded'] = true;
+
     $this->redirect('/mis-boletos');
   }
 
@@ -246,20 +249,24 @@ class OrderController extends Controller {
   }
 
   public function myTickets() {
-    if (session_status() !== PHP_SESSION_ACTIVE) session_start();
+    // Sesión para leer flags y recordar el DNI
+    if (session_status() !== PHP_SESSION_ACTIVE) { session_start(); }
+
     $justUploaded = !empty($_SESSION['just_uploaded']);
     if ($justUploaded) { unset($_SESSION['just_uploaded']); }
 
-    $dni = '';
+    // Normaliza el DNI igual que en create()
     if ($justUploaded) {
       $dni = preg_replace('/[^0-9A-Za-z\.\-]/', '', trim($_SESSION['last_dni'] ?? ''));
     } else {
       $dni = preg_replace('/[^0-9A-Za-z\.\-]/', '', trim($_GET['dni'] ?? ''));
     }
+
     if ($dni === '') {
       $this->view('public/my_tickets.php', ['tickets' => [], 'dni' => $dni, 'justUploaded' => $justUploaded]);
       return;
     }
+
     $_SESSION['last_dni'] = $dni;
 
     $pdo = Database::connect();
