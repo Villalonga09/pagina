@@ -1,0 +1,1 @@
+<p>Al continuar, aceptas que tu reserva se mantiene por 15 minutos. Pasado ese tiempo sin pago, se liberará automáticamente. Las compras están sujetas a verificación.</p>

@@ -1,0 +1,11 @@
+Options -Indexes
+DirectoryIndex index.php
+RewriteEngine On
+RewriteBase /
+# Block direct access to storage (defense-in-depth if someone misplaces it)
+RewriteRule ^tools/ - [F,L]
+RewriteRule ^storage/ - [F,L]
+# Route all to index.php if file/dir not exists
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^ index.php [QSA,L]

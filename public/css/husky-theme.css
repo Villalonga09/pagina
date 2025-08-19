@@ -1,0 +1,154 @@
+
+/* === Husky Devs dark theme refined === */
+
+/* Keep main dark variables */
+:root{
+  --bg: #0b0f13;
+  --card: #111418;
+  --border: #1b2230;
+  --txt: #e6eaf2;
+  --muted: #9aa7b7;
+  --accent: #2dd4bf;
+  --success: #22c55e;
+  --warning: #f59e0b;
+  --danger: #ef4444;
+}
+
+/* Global bg/text */
+html,body{background:#0b0f13;color:var(--txt)}
+h1,h2,h3,h4,h5{color:#f5faff !important}
+h2{font-weight:700;font-size:28px;margin:20px 0;color:#2dd4bf !important;}
+
+/* Buttons */
+.btn{
+  border-radius:10px;font-weight:600;
+  border:1px solid var(--border);
+  background:#111418;color:var(--txt);
+}
+.btn:hover{background:#1a1f25;color:var(--txt) !important}
+.btn-primary{
+  background: linear-gradient(180deg,#23d16b,#17b357) !important;
+  border:1px solid #16a34a !important;
+  color:#05160c !important;
+}
+.btn-primary:hover{filter:brightness(1.05) !important}
+.btn-outline{
+  background:transparent !important;
+  border:1px solid var(--accent) !important;
+  color:var(--accent) !important;
+}
+.btn-outline:hover{background:rgba(45,212,191,0.12) !important;color:#affff2 !important}
+
+/* Ticket grid fix */
+.ticket-panel{
+  background:#111418 !important;border:1px solid #1c2430 !important;
+}
+.ticket-toolbar{
+  background:#0f141a !important;border:1px solid #1c2430 !important;
+}
+.counter{
+  background:rgba(45,212,191,.15) !important;
+  border:1px solid var(--accent) !important;
+  color:#aaf7eb !important;
+}
+
+/* Inputs form side */
+.side-panel .card{background:#111418 !important;border:1px solid #1c2430 !important;}
+.input,select,textarea{
+  background:#0f141a !important;color:#f0f6ff !important;border:1px solid #1c2430 !important;
+}
+.input::placeholder{color:#6b7a90 !important}
+
+/* Footer */
+.footer{color:#7c8b9c !important;border-top:1px solid #12181f}
+
+/* Progress bars */
+.progress{background:#0f172a !important;border:1px solid #1f2937 !important}
+.progress span{background:linear-gradient(180deg,#2dd4bf,#22c55e) !important}
+
+/* Badges */
+.badge{background:rgba(45,212,191,.1)!important;border:1px solid rgba(45,212,191,.4)!important;color:#9cf2e6 !important}
+
+
+/* === Fixes per user feedback === */
+
+/* Headings */
+.accent-title{
+  color:#2dd4bf !important;
+  text-shadow: 0 1px 0 rgba(0,0,0,.35);
+}
+
+/* Buttons: remove blue hover coming from base CSS */
+.btn-primary:hover,
+.btn-primary:focus{
+  background: linear-gradient(180deg,#22c55e,#16a34a) !important;
+  color:#062012 !important;
+}
+.btn-outline:hover,
+.btn-outline:focus{
+  background: rgba(45,212,191,0.10) !important;
+  border-color:#2dd4bf !important;
+  color:#c6ffef !important;
+  box-shadow:none !important;
+}
+
+/* Pills & ticket grid */
+.ticket input:checked + .pill{
+  outline:2px solid #2dd4bf !important;
+  box-shadow: 0 0 0 2px rgba(45,212,191,.35) inset !important;
+}
+.pill:hover{ box-shadow:none !important; transform:none !important; }
+.counter{
+  background: rgba(45,212,191,.12) !important;
+  border-color: rgba(45,212,191,.45) !important;
+  color:#b8fff3 !important;
+}
+.ticket-panel{
+  background:#0f141a !important;
+  border-color:#1c2430 !important;
+}
+.ticket-toolbar{
+  background:#0b0f13 !important;
+  border:1px solid #1b2230 !important;
+}
+.total-box{
+  background:#0f141a !important;
+  border-color:#1c2430 !important;
+}
+
+/* Inputs focus ring (avoid blue glow) */
+input:focus, select:focus, textarea:focus{
+  outline:none !important;
+  border-color:#2dd4bf !important;
+  box-shadow:0 0 0 3px rgba(45,212,191,.18) !important;
+}
+
+/* Progress and small accents */
+.progress span{ background:linear-gradient(180deg,#2dd4bf,#22c55e) !important; }
+.badge{ border-color: rgba(45,212,191,.45) !important; color:#9cf2e6 !important; }
+
+/* --- Hard overrides to ensure dark surfaces across the app --- */
+header.site-header, .site-header{
+  background:#0b0f13 !important;
+  border-bottom:none !important;
+  box-shadow:none !important;
+}
+.card,
+.grid > .card,
+.modal .card,
+.side-panel .card,
+.section .card,
+div.card {
+  background:#111418 !important;
+  border:1px solid #1b2230 !important;
+  color:#e6eaf2 !important;
+}
+.card * { background: transparent; }
+.card .btn { background:#151a20 !important; color:#e6eaf2 !important; border:1px solid #1b2230 !important; }
+.card .btn-primary { background: linear-gradient(180deg,#23d16b,#17b357) !important; border-color:#16a34a !important; color:#04160b !important; }
+.site-header a { color:#eaf1ff !important; }
+.site-header .btn-outline { border-color:#2dd4bf !important; color:#2dd4bf !important; }
+
+
+/* header border kill */
+.site-header{ border-bottom: none !important; box-shadow: none !important; }

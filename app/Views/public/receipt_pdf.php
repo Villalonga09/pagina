@@ -1,0 +1,2 @@
+<?php ob_start(); include APP_PATH . '/Views/public/receipt.php'; $inner = ob_get_clean(); ?>
+<!doctype html><html><head><meta charset="utf-8"><style>body{font-family:Arial,Helvetica,sans-serif}</style></head><body><?=$inner?></body></html>

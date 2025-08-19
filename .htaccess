@@ -1,0 +1,15 @@
+Options -Indexes
+DirectoryIndex index.php
+RewriteEngine On
+RewriteBase /
+
+# Allow health check directly
+RewriteRule ^health(?:\.php)?$ public/health.php [L]
+
+# Map assets to /public
+RewriteRule ^(css|js|images|favicon\.ico)(/.*)?$ public/$1$2 [L]
+
+# Front controller
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^ index.php [QSA,L]
