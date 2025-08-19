@@ -4,7 +4,7 @@ require_once APP_PATH . "/Core/View.php";
 require_once APP_PATH . "/Core/Utils.php";
 require_once APP_PATH . "/Core/CSRF.php";
 require_once APP_PATH . "/Core/PDF.php";
-require_once APP_PATH . "/Core/Database.php"; // <-- Faltaba, usado en show() y myTickets()
+require_once APP_PATH . "/Core/Database.php"; // Usado en show() y myTickets()
 require_once APP_PATH . "/Models/Raffle.php";
 require_once APP_PATH . "/Models/Ticket.php";
 require_once APP_PATH . "/Models/Order.php";
@@ -216,7 +216,13 @@ class OrderController extends Controller {
     }
 
     (new Activity())->log(null, 'create', 'payment', $pid, "Pago registrado para orden {$order['code']}", ['reference' => $reference]);
-    $this->redirect('/mis-boletos?uploaded=1');
+
+    // Marca el flujo "just uploaded" y redirige a Mis Boletos usando la sesión
+    if (session_status() !== PHP_SESSION_ACTIVE) { session_start(); }
+    $_SESSION['last_dni'] = $order['buyer_dni'];
+    $_SESSION['just_uploaded'] = true;
+
+    $this->redirect('/mis-boletos');
   }
 
   public function receiptHtml($code) {
@@ -235,17 +241,33 @@ class OrderController extends Controller {
     ob_start();
     include APP_PATH . "/Views/public/receipt_pdf.php";
     $html = ob_get_clean();
-    PDF::receipt($html, "comprobante_{$order['code']}.pdf");
+    try {
+      PDF::receipt($html, "comprobante_{$order['code']}.pdf");
+    } catch (Throwable $e) {
+      $this->view('public/error.php', ['message' => 'No se pudo generar el PDF.']);
+    }
   }
 
   public function myTickets() {
+    // Sesión para leer flags y recordar el DNI
+    if (session_status() !== PHP_SESSION_ACTIVE) { session_start(); }
+
+    $justUploaded = !empty($_SESSION['just_uploaded']);
+    if ($justUploaded) { unset($_SESSION['just_uploaded']); }
+
     // Normaliza el DNI igual que en create()
-    $justUploaded = isset($_GET['uploaded']);
-    $dni = preg_replace('/[^0-9A-Za-z\.\-]/', '', trim($_GET['dni'] ?? ''));
+    if ($justUploaded) {
+      $dni = preg_replace('/[^0-9A-Za-z\.\-]/', '', trim($_SESSION['last_dni'] ?? ''));
+    } else {
+      $dni = preg_replace('/[^0-9A-Za-z\.\-]/', '', trim($_GET['dni'] ?? ''));
+    }
+
     if ($dni === '') {
       $this->view('public/my_tickets.php', ['tickets' => [], 'dni' => $dni, 'justUploaded' => $justUploaded]);
       return;
     }
+
+    $_SESSION['last_dni'] = $dni;
 
     $pdo = Database::connect();
     $sql = "SELECT
