@@ -2,6 +2,7 @@
 require_once APP_PATH . "/Core/Controller.php";
 require_once APP_PATH . "/Core/View.php";
 require_once APP_PATH . "/Core/Auth.php";
+require_once APP_PATH . "/Core/CSRF.php";
 require_once APP_PATH . "/Core/Mailer.php";
 require_once APP_PATH . "/Models/Payment.php";
 require_once APP_PATH . "/Models/Order.php";
@@ -12,6 +13,7 @@ require_once APP_PATH . "/Models/Activity.php";
 class PaymentsController extends Controller {
   public function approve($id) {
     if (!Auth::check()) { $this->redirect('/admin/login'); }
+    CSRF::validate();
     $p = new Payment(); $o = new Order(); $t = new Ticket(); $r = new Raffle(); $a = new Activity();
     $pay = $p->find($id);
     if (!$pay) die("Pago no encontrado");
@@ -42,6 +44,7 @@ class PaymentsController extends Controller {
 
   public function reject($id) {
     if (!Auth::check()) { $this->redirect('/admin/login'); }
+    CSRF::validate();
     $p = new Payment(); $o = new Order(); $t = new Ticket(); $a = new Activity();
     $pay = $p->find($id);
     if (!$pay) die("Pago no encontrado");
