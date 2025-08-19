@@ -8,9 +8,9 @@
   <p><strong>Total:</strong> $<?=Utils::money($order['total_usd'])?> / Bs. <?=Utils::money($order['total_ves'])?></p>
   <h3>Boletos</h3>
   <ul>
-    <?php foreach ($items as $it): $url = Utils::url('/orden/'.$order['code']); ?>
-      <li><?=Utils::e($it['title'])?> — #<?=$it['number']?> — <img src="https://api.qrserver.com/v1/create-qr-code/?size=80x80&data=<?=urlencode($url)?>" alt="QR"></li>
+    <?php foreach ($items as $it): ?>
+      <li><?=Utils::e($it['title'])?> — #<?=$it['number']?></li>
     <?php endforeach; ?>
   </ul>
-  <p style="font-size:12px;color:#555">Escanea el QR para ver tu orden: <?=Utils::url('/orden/'.$order['code'])?></p>
+  <p style="font-size:12px;color:#555">Consulta tu orden en: <?=Utils::url('/orden/'.$order['code'])?></p>
 </div>
