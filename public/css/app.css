@@ -598,7 +598,8 @@ h2 { font-weight: 700; font-size: clamp(24px, 3vw, 34px); line-height: 1.15; }
 
 /* Payment details */
 .paybox{margin-top:8px;padding:10px 12px;border-radius:12px;border:1px solid var(--border);background:var(--panel, var(--card));}
-.paybox--card{background:#fff;border:0;box-shadow:0 4px 12px rgba(0,0,0,.1);}
+.paybox--minimal{}
+.paybox--material{background:#fff;border:0;box-shadow:0 4px 12px rgba(0,0,0,.1);}
 .paybox--glass{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);backdrop-filter:blur(8px);box-shadow:0 4px 20px rgba(0,0,0,.2);}
 .paybox__title{font-weight:600;margin-bottom:6px;}
 .paybox .payrow{display:flex;justify-content:space-between;gap:8px;padding:6px 0;border-bottom:1px dashed var(--border);}
@@ -612,6 +613,7 @@ h2 { font-weight: 700; font-size: clamp(24px, 3vw, 34px); line-height: 1.15; }
 
 /* Upload box */
 .uploadbox{padding:12px;border:1px dashed var(--border);border-radius:12px;background:var(--panel, var(--card));transition:box-shadow .2s,background .2s;}
+.uploadbox--minimal{}
 .uploadbox:hover{box-shadow:0 4px 16px rgba(0,0,0,.06);}
 .uploadbox--material{background:#fff;box-shadow:0 4px 16px rgba(0,0,0,.08);border-style:solid;}
 .uploadbox--glass{background:rgba(255,255,255,.15);border-color:rgba(255,255,255,.35);backdrop-filter:blur(8px);box-shadow:0 4px 20px rgba(0,0,0,.2);}
@@ -631,6 +633,7 @@ h2 { font-weight: 700; font-size: clamp(24px, 3vw, 34px); line-height: 1.15; }
 
 /* Countdown box */
 .countdown-box{border-radius:12px;padding:10px 12px;border:1px solid var(--border);background:var(--panel, var(--card));}
+.countdown-box--minimal{}
 .countdown-box--material{background:#fff;box-shadow:0 2px 12px rgba(0,0,0,.08);}
 .countdown-box--glass{background:rgba(255,255,255,.15);border-color:rgba(255,255,255,.3);backdrop-filter:blur(8px);box-shadow:0 4px 20px rgba(0,0,0,.2);}
 .cd-progress{height:8px;margin-top:6px;background:var(--border);border-radius:999px;overflow:hidden;}

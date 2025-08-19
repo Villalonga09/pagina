@@ -68,7 +68,7 @@
         </div>
       </div>
       <div class="col-right" style="display:grid; gap:12px">
-        <div id="paymentDetails" class="small payment-details" data-paybox-variant="card" role="region" aria-label="Detalles del pago"></div>
+        <div id="paymentDetails" class="small payment-details" data-paybox-variant="material" role="region" aria-label="Detalles del pago"></div>
         <div class="uploadbox uploadbox--minimal" role="group" aria-labelledby="receiptLabel" aria-describedby="receiptHelp">
           <div id="receiptLabel" class="uploadbox__title">Comprobante</div>
           <p id="receiptHelp" class="small uploadbox__help">Adjunta la imagen del pago (JPG, PNG o WEBP, máx. 5MB).</p>
