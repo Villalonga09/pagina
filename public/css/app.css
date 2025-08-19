@@ -73,6 +73,51 @@ label{font-size:13px;color:var(--muted);margin-bottom:6px;display:block}
   gap:12px;
 }
 
+/* ===== Order detail layout ===== */
+.order-page{
+  max-width:860px;
+  margin:0 auto;
+  padding:32px 16px 64px;
+}
+
+.order-sub{
+  margin:0 0 32px;
+  color:var(--muted);
+}
+
+.order-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+  gap:24px;
+  align-items:start;
+}
+
+.order-summary,
+.order-tickets,
+.order-payment{
+  padding:24px;
+}
+
+.order-payment{margin-top:32px;}
+
+.security-notice{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin-bottom:16px;
+  font-size:13px;
+  color:var(--muted);
+}
+
+.lock-icon{font-size:16px;}
+
+@media (max-width:600px){
+  .order-page{padding:24px 12px 48px;}
+  .order-summary,
+  .order-tickets,
+  .order-payment{padding:20px;}
+}
+
 
 /* ====== Raffle detail layout (clean) ====== */
 .form-row{display:grid;grid-template-columns:1.4fr .8fr;gap:24px;align-items:flex-start}

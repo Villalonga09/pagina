@@ -18,7 +18,6 @@
   </div>
   <?php endif; ?>
   </div>
-  <br>
 <div class="card order-tickets">
   <h3 class="card-title">Boletos</h3>
   <table class="table card-table">
@@ -31,7 +30,6 @@
     <?php endforeach; ?>
   </table>
   </div>
-  <br>
 </div>
 <?php if (!empty($_GET['uploaded'])): ?>
   <div class="alert alert-success" id="paymentUploadedMsg">¡Comprobante recibido! Está en revisión.</div>
