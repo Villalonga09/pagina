@@ -660,6 +660,8 @@ h2 { font-weight: 700; font-size: clamp(24px, 3vw, 34px); line-height: 1.15; }
 .btn-slim{padding:8px 12px;border-radius:10px;border:1px solid var(--border);background:var(--panel, #fff);cursor:pointer;transition:background .2s,box-shadow .2s;}
 .btn-slim:hover{background:var(--accent);color:#fff;box-shadow:0 4px 12px rgba(0,0,0,.08);}
 .btn-slim:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
+.btn-view-receipt{background:#23d16b;border-color:#23d16b;color:#fff;}
+.btn-view-receipt:hover{background:#23d16b;color:#fff;}
 .uploadbox__filename{opacity:.8;}
 .uploadbox__preview{margin-top:10px;display:none;opacity:0;transition:opacity .3s ease;}
 .uploadbox__preview.show{display:block;opacity:1;}
@@ -686,7 +688,7 @@ h2 { font-weight: 700; font-size: clamp(24px, 3vw, 34px); line-height: 1.15; }
 .modal-backdrop{position:absolute;inset:0;background:rgba(0,0,0,.55);}
 .modal-content{position:relative;background:#fff;border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,.25);max-width:90vw;max-height:90vh;overflow:hidden;}
 .modal-content img{display:block;max-width:90vw;max-height:90vh;}
-.modal-close{position:absolute;top:6px;right:8px;border:0;background:#fff;width:32px;height:32px;border-radius:9999px;cursor:pointer;box-shadow:0 1px 6px rgba(0,0,0,.2);}
+.modal-close{position:absolute;top:6px;right:8px;border:0;background:#fff;width:32px;height:32px;border-radius:9999px;cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,.25);}
 .linkish{cursor:pointer;text-decoration:underline;}
 
 /* ====== Order Page Layout ====== */
