@@ -93,6 +93,11 @@ $r = new Raffle(); $t = new Ticket(); $o = new Order(); $s = new Setting(); $a =
     $amount_usd = floatval($_POST['amount_usd'] ?? 0);
     $reference = trim($_POST['reference'] ?? '');
     $receipt_path = null;
+    $p = new Payment();
+    if ($reference && $p->referenceExists($reference)) {
+      $this->view('public/error.php',['message'=>'Esta referencia ya fue registrada.']);
+      return;
+    }
 
     
     // Override client-provided amounts for security: compute from order + BCV
@@ -117,10 +122,18 @@ if (!empty($_FILES['receipt']['name'])) {
       $receipt_path = $fname;
     }
 
-    $pid = (new Payment())->create($order['id'], [
-      'method'=>$method, 'amount_ves'=>$amount_ves, 'amount_usd'=>$amount_usd,
-      'reference'=>$reference, 'receipt_path'=>$receipt_path
-    ]);
+    try {
+      $pid = $p->create($order['id'], [
+        'method'=>$method, 'amount_ves'=>$amount_ves, 'amount_usd'=>$amount_usd,
+        'reference'=>$reference, 'receipt_path'=>$receipt_path
+      ]);
+    } catch (PDOException $e) {
+      if ($e->getCode() === '23000') {
+        $this->view('public/error.php',['message'=>'Esta referencia ya fue registrada.']);
+        return;
+      }
+      throw $e;
+    }
     (new Activity())->log(null,'create','payment',$pid,"Pago registrado para orden {$order['code']}",['reference'=>$reference]);
     $this->redirect('/orden/' . $code . '?uploaded=1');
   }
