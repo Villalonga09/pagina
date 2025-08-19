@@ -10,7 +10,7 @@
   $remaining = isset($remaining) ? (int)$remaining : 0;
   $expiry_ts = time() + $remaining;
   ?>
-<p><strong>Estado:</strong> <span class="tag"><?=$order['status']?></span></p>
+<p><strong>Estado:</strong> <span class="tag"><?=Utils::e($order['status'])?></span></p>
   <?php if ($order['status']==='pendiente'): ?>
   <div id="countdownBox" class="alert countdown-box countdown-box--minimal" role="status" aria-live="polite">
     Tiempo restante para pagar: <strong><span id="countdown" data-expiry="<?=$expiry_ts?>" aria-live="polite"></span></strong>
