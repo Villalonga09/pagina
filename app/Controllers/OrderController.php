@@ -169,7 +169,14 @@ $r = new Raffle(); $t = new Ticket(); $o = new Order(); $s = new Setting(); $a =
     $st->execute([$dni]);
     $tickets = $st->fetchAll();
     if (!$tickets) {
-      $this->view('public/my_tickets.php', ['tickets'=>[], 'dni'=>$dni, 'error'=>'No se encontraron boletos para esa Cédula/DNI.']);
+      $this->view(
+        'public/my_tickets.php',
+        [
+          'tickets' => [],
+          'dni' => $dni,
+          'error' => 'No se encontraron boletos para esa Cédula/DNI.'
+        ]
+      );
       return;
     }
     $this->view('public/my_tickets.php', ['tickets'=>$tickets, 'dni'=>$dni]);
