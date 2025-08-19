@@ -216,7 +216,10 @@ class OrderController extends Controller {
     }
 
     (new Activity())->log(null, 'create', 'payment', $pid, "Pago registrado para orden {$order['code']}", ['reference' => $reference]);
-    $this->redirect('/orden/' . $code . '?uploaded=1');
+    if (session_status() !== PHP_SESSION_ACTIVE) session_start();
+    $_SESSION['last_dni'] = $order['buyer_dni'];
+    $_SESSION['just_uploaded'] = true;
+    $this->redirect('/mis-boletos');
   }
 
   public function receiptHtml($code) {
@@ -235,21 +238,35 @@ class OrderController extends Controller {
     ob_start();
     include APP_PATH . "/Views/public/receipt_pdf.php";
     $html = ob_get_clean();
-    PDF::receipt($html, "comprobante_{$order['code']}.pdf");
+    try {
+      PDF::receipt($html, "comprobante_{$order['code']}.pdf");
+    } catch (Throwable $e) {
+      $this->view('public/error.php', ['message' => 'No se pudo generar el PDF.']);
+    }
   }
 
   public function myTickets() {
-    // Normaliza el DNI igual que en create()
-    $dni = preg_replace('/[^0-9A-Za-z\.\-]/', '', trim($_GET['dni'] ?? ''));
+    if (session_status() !== PHP_SESSION_ACTIVE) session_start();
+    $justUploaded = !empty($_SESSION['just_uploaded']);
+    if ($justUploaded) { unset($_SESSION['just_uploaded']); }
+
+    $dni = '';
+    if ($justUploaded) {
+      $dni = preg_replace('/[^0-9A-Za-z\.\-]/', '', trim($_SESSION['last_dni'] ?? ''));
+    } else {
+      $dni = preg_replace('/[^0-9A-Za-z\.\-]/', '', trim($_GET['dni'] ?? ''));
+    }
     if ($dni === '') {
-      $this->view('public/my_tickets.php', ['tickets' => [], 'dni' => $dni]);
+      $this->view('public/my_tickets.php', ['tickets' => [], 'dni' => $dni, 'justUploaded' => $justUploaded]);
       return;
     }
+    $_SESSION['last_dni'] = $dni;
 
     $pdo = Database::connect();
     $sql = "SELECT
               oi.*, r.title, t.number, o.code AS order_code, o.status AS order_status,
-              GREATEST(0, TIMESTAMPDIFF(SECOND, NOW(), DATE_ADD(o.created_at, INTERVAL 15 MINUTE))) AS remaining_seconds
+              GREATEST(0, TIMESTAMPDIFF(SECOND, NOW(), DATE_ADD(o.created_at, INTERVAL 15 MINUTE))) AS remaining_seconds,
+              EXISTS(SELECT 1 FROM payments p WHERE p.order_id = o.id AND p.status IN ('pendiente','aprobado')) AS has_receipt
             FROM order_items oi
             JOIN orders  o ON o.id = oi.order_id
             JOIN raffles r ON r.id = oi.raffle_id
@@ -262,14 +279,15 @@ class OrderController extends Controller {
 
     if (!$tickets) {
       $this->view('public/my_tickets.php', [
-        'tickets' => [],
-        'dni'     => $dni,
-        'error'   => 'No se encontraron boletos para esa Cédula/DNI.'
+        'tickets'      => [],
+        'dni'          => $dni,
+        'error'        => 'No se encontraron boletos para esa Cédula/DNI.',
+        'justUploaded' => $justUploaded
       ]);
       return;
     }
 
-    $this->view('public/my_tickets.php', ['tickets' => $tickets, 'dni' => $dni]);
+    $this->view('public/my_tickets.php', ['tickets' => $tickets, 'dni' => $dni, 'justUploaded' => $justUploaded]);
   }
 
 }
