@@ -55,8 +55,8 @@ $r = new Raffle(); $t = new Ticket(); $o = new Order(); $s = new Setting(); $a =
       $this->redirect('/orden/' . $code);
     } catch (Throwable $e) {
       $this->view('public/error.php', ['message'=>'No fue posible crear la orden. Intente de nuevo.']);
-    }
   }
+}
 
   public function show($code) {
     // Liberar reservas expiradas automáticamente
@@ -114,7 +114,7 @@ if (!empty($_FILES['receipt']['name'])) {
       'reference'=>$reference, 'receipt_path'=>$receipt_path
     ]);
     (new Activity())->log(null,'create','payment',$pid,"Pago registrado para orden {$order['code']}",['reference'=>$reference]);
-    $this->redirect('/orden/' . $code);
+    $this->redirect('/orden/' . $code . '?uploaded=1');
   }
 
   public function receiptHtml($code) {

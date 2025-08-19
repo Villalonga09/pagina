@@ -27,7 +27,16 @@
       </tr>
     <?php endforeach; ?>
   </table>
-</div>
+  </div>
+<?php if (!empty($_GET['uploaded'])): ?>
+  <style>
+    .alert-success{margin:8px 0 12px;padding:10px 12px;border:1px solid var(--success);background:rgba(52,211,153,.15);color:var(--success);border-radius:12px;}
+  </style>
+  <div class="alert-success" id="paymentUploadedMsg">¡Comprobante recibido! Está en revisión.</div>
+  <script>
+    setTimeout(function(){ var el=document.getElementById('paymentUploadedMsg'); if(el){ el.style.display='none'; } }, 5000);
+  </script>
+<?php endif; ?>
 <div class="card">
   <h3>Pago</h3>
   <style>
