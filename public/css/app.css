@@ -553,3 +553,28 @@ h2 { font-weight: 700; font-size: clamp(24px, 3vw, 34px); line-height: 1.15; }
 /* Title inside toolbar */
 .ticket-toolbar{ display:flex; flex-direction:column; align-items:flex-start; gap:8px; }
 .ticket-toolbar .section-title{ margin:0; font-weight:600; opacity:.95; }
+
+/* Payment security notice */
+.security-notice{ display:flex; align-items:center; gap:6px; font-size:12px; color:var(--muted); margin:8px 0; }
+.security-notice .lock-icon{ font-size:14px; }
+
+/* Manual verification tooltip */
+.verification-info{ position:relative; display:inline-flex; align-items:center; gap:4px; color:var(--muted); margin-top:6px; }
+.verification-info .info-icon{ cursor:pointer; }
+.verification-info .tooltip{
+  display:none;
+  position:absolute;
+  left:0;
+  top:100%;
+  margin-top:4px;
+  width:220px;
+  background:var(--panel, var(--card));
+  color:var(--text, var(--txt));
+  border:1px solid var(--border);
+  border-radius:8px;
+  padding:8px;
+  box-shadow:0 4px 12px rgba(0,0,0,.08);
+  z-index:30;
+}
+.verification-info:hover .tooltip,
+.verification-info:focus-within .tooltip{ display:block; }
