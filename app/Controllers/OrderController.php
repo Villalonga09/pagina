@@ -216,7 +216,7 @@ class OrderController extends Controller {
     }
 
     (new Activity())->log(null, 'create', 'payment', $pid, "Pago registrado para orden {$order['code']}", ['reference' => $reference]);
-    $this->redirect('/orden/' . $code . '?uploaded=1');
+    $this->redirect('/mis-boletos?uploaded=1');
   }
 
   public function receiptHtml($code) {
@@ -240,16 +240,18 @@ class OrderController extends Controller {
 
   public function myTickets() {
     // Normaliza el DNI igual que en create()
+    $justUploaded = isset($_GET['uploaded']);
     $dni = preg_replace('/[^0-9A-Za-z\.\-]/', '', trim($_GET['dni'] ?? ''));
     if ($dni === '') {
-      $this->view('public/my_tickets.php', ['tickets' => [], 'dni' => $dni]);
+      $this->view('public/my_tickets.php', ['tickets' => [], 'dni' => $dni, 'justUploaded' => $justUploaded]);
       return;
     }
 
     $pdo = Database::connect();
     $sql = "SELECT
               oi.*, r.title, t.number, o.code AS order_code, o.status AS order_status,
-              GREATEST(0, TIMESTAMPDIFF(SECOND, NOW(), DATE_ADD(o.created_at, INTERVAL 15 MINUTE))) AS remaining_seconds
+              GREATEST(0, TIMESTAMPDIFF(SECOND, NOW(), DATE_ADD(o.created_at, INTERVAL 15 MINUTE))) AS remaining_seconds,
+              EXISTS(SELECT 1 FROM payments p WHERE p.order_id = o.id AND p.status IN ('pendiente','aprobado')) AS has_receipt
             FROM order_items oi
             JOIN orders  o ON o.id = oi.order_id
             JOIN raffles r ON r.id = oi.raffle_id
@@ -262,14 +264,15 @@ class OrderController extends Controller {
 
     if (!$tickets) {
       $this->view('public/my_tickets.php', [
-        'tickets' => [],
-        'dni'     => $dni,
-        'error'   => 'No se encontraron boletos para esa Cédula/DNI.'
+        'tickets'      => [],
+        'dni'          => $dni,
+        'error'        => 'No se encontraron boletos para esa Cédula/DNI.',
+        'justUploaded' => $justUploaded
       ]);
       return;
     }
 
-    $this->view('public/my_tickets.php', ['tickets' => $tickets, 'dni' => $dni]);
+    $this->view('public/my_tickets.php', ['tickets' => $tickets, 'dni' => $dni, 'justUploaded' => $justUploaded]);
   }
 
 }
