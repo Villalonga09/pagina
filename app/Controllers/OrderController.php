@@ -109,6 +109,12 @@ class OrderController extends Controller {
 
     $items    = $o->items($order['id']);
     $payments = (new Payment())->byOrder($order['id']);
+    if (!empty($payments)) {
+      if (session_status() !== PHP_SESSION_ACTIVE) { session_start(); }
+      $_SESSION['last_dni'] = $order['buyer_dni'];
+      $this->redirect('/');
+      return;
+    }
 
     // Cálculo de expiración usando la hora de la BD
     $pdo = Database::connect();
@@ -119,7 +125,6 @@ class OrderController extends Controller {
     $this->view('public/order_show.php', [
       'order'     => $order,
       'items'     => $items,
-      'payments'  => $payments,
       'remaining' => $remaining
     ]);
   }
@@ -284,9 +289,19 @@ class OrderController extends Controller {
     $st->execute([$dni]);
     $tickets = $st->fetchAll();
 
-    if (!$tickets) {
+    $sqlP = "SELECT p.method, p.status, p.reference, p.receipt_path, o.code AS order_code
+             FROM payments p
+             JOIN orders o ON o.id = p.order_id
+             WHERE o.buyer_dni = ?
+             ORDER BY p.id DESC";
+    $stP = $pdo->prepare($sqlP);
+    $stP->execute([$dni]);
+    $payments = $stP->fetchAll();
+
+    if (!$tickets && !$payments) {
       $this->view('public/my_tickets.php', [
         'tickets'      => [],
+        'payments'     => [],
         'dni'          => $dni,
         'error'        => 'No se encontraron boletos para esa Cédula/DNI.',
         'justUploaded' => $justUploaded
@@ -294,7 +309,12 @@ class OrderController extends Controller {
       return;
     }
 
-    $this->view('public/my_tickets.php', ['tickets' => $tickets, 'dni' => $dni, 'justUploaded' => $justUploaded]);
+    $this->view('public/my_tickets.php', [
+      'tickets'      => $tickets,
+      'payments'     => $payments,
+      'dni'          => $dni,
+      'justUploaded' => $justUploaded
+    ]);
   }
 
 }

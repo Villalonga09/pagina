@@ -98,39 +98,8 @@
     <?php endif; ?>
   </div>
   <?php endif; ?>
-  <?php if (!empty($payments)): ?>
-    <h4 class="card-title mt-16">Pagos enviados</h4>
-    <table class="table card-table">
-      <tr>
-        <th>Método</th>
-        <th>Estado</th>
-        <th>Referencia</th>
-        <th>Comprobante</th>
-      </tr>
-      <?php foreach ($payments as $p):
-        $stClass = [
-          'pendiente' => 'badge-warning',
-          'aprobado' => 'badge-success',
-          'rechazado' => 'badge-danger'
-        ][$p['status']] ?? 'badge';
-      ?>
-        <tr>
-          <td><?=Utils::e($p['method'])?></td>
-          <td><span class="badge <?=$stClass?>"><?=Utils::e($p['status'])?></span></td>
-          <td><?=Utils::e($p['reference'])?></td>
-          <td>
-            <?php if ($p['receipt_path']): ?>
-              <img src="/file/receipt/<?=Utils::e($p['receipt_path'])?>" alt="Comprobante" class="receipt-thumb">
-            <?php else: ?>
-              —
-            <?php endif; ?>
-          </td>
-        </tr>
-      <?php endforeach; ?>
-    </table>
-  <?php endif; ?>
-</div>
-</div>
+  </div>
+  </div>
 
 
 
