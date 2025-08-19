@@ -136,7 +136,7 @@ class OrderController extends Controller {
     }
 
     // Valida método contra lista conocida (ajusta según tus métodos)
-    $allowedMethods = ['pago_movil', 'transferencia', 'zelle', 'efectivo'];
+    $allowedMethods = ['pago_movil','zelle','binance','efectivo'];
     $method = $_POST['method'] ?? 'pago_movil';
     if (!in_array($method, $allowedMethods, true)) { $method = 'pago_movil'; }
 
