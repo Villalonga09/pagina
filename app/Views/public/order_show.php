@@ -12,9 +12,9 @@
   ?>
 <p><strong>Estado:</strong> <span class="tag"><?=$order['status']?></span></p>
 <?php if ($order['status']==='pendiente'): ?>
-<div id="countdownBox" class="alert alert-warning">
-  Tiempo restante para pagar: <strong><span id="countdown" data-expiry="<?=$expiry_ts?>"></span></strong>
-  <div id="countdownProgress" class="cd-progress"><span></span></div>
+<div id="countdownBox" class="alert countdown-box countdown-box--minimal" role="status" aria-live="polite">
+  Tiempo restante para pagar: <strong><span id="countdown" data-expiry="<?=$expiry_ts?>" aria-live="polite"></span></strong>
+  <div id="countdownProgress" class="cd-progress" role="progressbar" aria-label="Tiempo restante" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100"><span></span></div>
 </div>
 <?php endif; ?>
   <p><a class="btn" href="/orden/<?=$order['code']?>/comprobante">Ver comprobante</a> 
@@ -42,25 +42,6 @@
 <div class="card order-payment">
   <h3 class="card-title">Pago</h3>
   <?php if ($order['status'] === 'pendiente'): ?>
-  <style>
-  /* paydetails styles */
-  .paybox{margin-top:8px; padding:10px 12px; border:1px solid #eee; border-radius:12px; background:#fafafa}
-  .payrow{display:flex; justify-content:space-between; gap:8px; padding:6px 0; border-bottom:1px dashed #e5e7eb}
-  .payrow:last-child{border-bottom:none}
-  .paylabel{opacity:.75}
-  .payvalue{font-weight:600; cursor:pointer; user-select:all}
-  .payactions{display:flex; gap:8px; margin-top:8px}
-  .btn-slim{padding:6px 10px; border-radius:10px; border:1px solid #e5e7eb; background:white; cursor:pointer}
-  .toast{position:fixed; left:50%; transform:translateX(-50%); bottom:18px; background:#111; color:#fff; padding:8px 12px; border-radius:10px; font-size:12px; opacity:0; transition:opacity .2s}
-  .toast.show{opacity:.95}
-    .modal{position:fixed; inset:0; display:none; align-items:center; justify-content:center; z-index:1000}
-  .modal.show{display:flex}
-  .modal-backdrop{position:absolute; inset:0; background:rgba(0,0,0,.55)}
-  .modal-content{position:relative; background:#fff; border-radius:12px; box-shadow:0 10px 30px rgba(0,0,0,.25); max-width:90vw; max-height:90vh; overflow:hidden}
-  .modal-content img{display:block; max-width:90vw; max-height:90vh}
-  .modal-close{position:absolute; top:6px; right:8px; border:0; background:#fff; width:32px; height:32px; border-radius:9999px; cursor:pointer; box-shadow:0 1px 6px rgba(0,0,0,.2)}
-  .linkish{cursor:pointer; text-decoration:underline}
-  </style>
   <div class="security-notice"><span class="lock-icon">🔒</span> Tus datos se transmiten de forma segura</div>
   <a id="pago"></a>
 <form action="/orden/<?=$order['code']?>/pago" method="post" enctype="multipart/form-data">
@@ -87,17 +68,17 @@
         </div>
       </div>
       <div class="col-right" style="display:grid; gap:12px">
-        <div id="paymentDetails" class="small"></div>
-        <div class="uploadbox" style="padding:12px; border:1px dashed #d1d5db; border-radius:12px; background:#f9fafb">
-          <div style="font-weight:600; margin-bottom:6px">Comprobante</div>
-          <p class="small" style="margin:6px 0 10px; opacity:.8">Adjunta la imagen del pago (JPG, PNG o WEBP, máx. 5MB).</p>
-          <input id="receiptInput" type="file" name="receipt" accept="image/*" style="display:none" required>
-          <div style="display:flex; gap:10px; align-items:center">
-            <label for="receiptInput" class="btn-slim" style="display:inline-block; padding:8px 12px; border:1px solid #e5e7eb; border-radius:10px; background:white; cursor:pointer">Seleccionar archivo</label>
-            <span id="receiptName" class="small" style="opacity:.8">Ningún archivo seleccionado</span>
+        <div id="paymentDetails" class="small payment-details payment-details--minimal" role="region" aria-label="Detalles del pago"></div>
+        <div class="uploadbox uploadbox--minimal" role="group" aria-labelledby="receiptLabel" aria-describedby="receiptHelp">
+          <div id="receiptLabel" class="uploadbox__title">Comprobante</div>
+          <p id="receiptHelp" class="small uploadbox__help">Adjunta la imagen del pago (JPG, PNG o WEBP, máx. 5MB).</p>
+          <input id="receiptInput" type="file" name="receipt" accept="image/*" required aria-describedby="receiptHelp">
+          <div class="uploadbox__actions">
+            <label for="receiptInput" class="btn-slim uploadbox__button" role="button" tabindex="0">Seleccionar archivo</label>
+            <span id="receiptName" class="small uploadbox__filename" aria-live="polite">Ningún archivo seleccionado</span>
           </div>
-          <div id="receiptPreview" style="margin-top:10px; display:none">
-            <img id="receiptImg" src="" alt="Vista previa" style="max-width:100%; max-height:220px; border-radius:10px; box-shadow:0 1px 6px rgba(0,0,0,.06)">
+          <div id="receiptPreview" class="uploadbox__preview">
+            <img id="receiptImg" src="" alt="Vista previa del comprobante" class="uploadbox__img">
           </div>
           <!-- Modal para vista previa -->
           <div id="imgModal" class="modal" aria-hidden="true" role="dialog" aria-label="Vista previa del comprobante">
@@ -231,21 +212,22 @@
   function renderDetails(key){
     var d = details[key];
     if (!d){ detailsNode.innerHTML = ''; return; }
-    var html = '<div class="paybox">';
-    html += '<div style="font-weight:600; margin-bottom:6px">'+ d.title +'</div>';
-    d.rows.forEach(function(r){
-      var label = r[0], val = r[1];
-      html += '<div class="payrow">'
-           +    '<span class="paylabel">'+ label +'</span>'
-           +    '<span class="payvalue" data-copy="'+ String(val).replace(/"/g,'&quot;') +'" title="Copiar">'+ val +'</span>'
-           +  '</div>';
-    });
-    html += '</div>';
+      var html = '<div class="paybox" role="list">';
+      html += '<div class="paybox__title">'+ d.title +'</div>';
+      d.rows.forEach(function(r){
+        var label = r[0], val = r[1];
+        html += '<div class="payrow" role="listitem">'
+             +    '<span class="paylabel">'+ label +'</span>'
+             +    '<span class="payvalue" tabindex="0" data-copy="'+ String(val).replace(/"/g,'&quot;') +'" aria-label="Copiar '+ label +'">'+ val +'</span>'
+             +  '</div>';
+      });
+      html += '</div>';
     detailsNode.innerHTML = html;
 
-    detailsNode.querySelectorAll('.payvalue').forEach(function(el){
-      el.addEventListener('click', function(){ copyText(this.getAttribute('data-copy')); });
-    });
+      detailsNode.querySelectorAll('.payvalue').forEach(function(el){
+        el.addEventListener('click', function(){ copyText(this.getAttribute('data-copy')); });
+        el.addEventListener('keydown', function(e){ if(e.key==='Enter' || e.key===' '){ copyText(this.getAttribute('data-copy')); }});
+      });
   }
 
   function onChange(){
@@ -258,13 +240,15 @@
   if (methodSel){ methodSel.addEventListener('change', onChange); }
 
   // Modal preview logic (only on filename click)
-  var input = document.getElementById('receiptInput');
-  var nameEl = document.getElementById('receiptName');
-  var modal = document.getElementById('imgModal');
-  var modalImg = document.getElementById('modalImg');
-  var modalClose = document.getElementById('modalClose');
-  var modalBackdrop = document.getElementById('modalBackdrop');
-  var dataUrl = null;
+    var input = document.getElementById('receiptInput');
+    var nameEl = document.getElementById('receiptName');
+    var preview = document.getElementById('receiptPreview');
+    var previewImg = document.getElementById('receiptImg');
+    var modal = document.getElementById('imgModal');
+    var modalImg = document.getElementById('modalImg');
+    var modalClose = document.getElementById('modalClose');
+    var modalBackdrop = document.getElementById('modalBackdrop');
+    var dataUrl = null;
 
   function openModal(){
     if (!dataUrl) return;
@@ -278,32 +262,38 @@
     setTimeout(function(){ modalImg.src=''; }, 200);
   }
 
-  if (nameEl){ nameEl.addEventListener('click', openModal); }
-  if (modalClose){ modalClose.addEventListener('click', closeModal); }
-  if (modalBackdrop){ modalBackdrop.addEventListener('click', closeModal); }
-  document.addEventListener('keydown', function(e){ if(e.key==='Escape'){ closeModal(); }});
+      if (nameEl){ nameEl.addEventListener('click', openModal); }
+      if (modalClose){ modalClose.addEventListener('click', closeModal); }
+      if (modalBackdrop){ modalBackdrop.addEventListener('click', closeModal); }
+      document.addEventListener('keydown', function(e){ if(e.key==='Escape'){ closeModal(); }});
 
   if (input){
-    input.addEventListener('change', function(){
-      var f = input.files && input.files[0];
-      dataUrl = null;
-      if (!f){
-        if (nameEl){ nameEl.textContent = 'Ningún archivo seleccionado'; nameEl.classList.remove('linkish'); }
-        return;
-      }
-      if (nameEl){ nameEl.textContent = f.name + ' (' + Math.round(f.size/1024) + ' KB)'; }
-      if (f.type && f.type.indexOf('image/') === 0){
-        var reader = new FileReader();
-        reader.onload = function(e){
-          dataUrl = e.target.result;
-          if (nameEl){ nameEl.classList.add('linkish'); }
-        };
-        reader.readAsDataURL(f);
-      } else {
-        if (nameEl){ nameEl.classList.remove('linkish'); }
-      }
-    });
-  }
+      input.addEventListener('change', function(){
+        var f = input.files && input.files[0];
+        dataUrl = null;
+        if (!f){
+          if (nameEl){ nameEl.textContent = 'Ningún archivo seleccionado'; nameEl.classList.remove('linkish'); }
+          if (preview){ preview.classList.remove('show'); }
+          if (previewImg){ previewImg.src = ''; }
+          return;
+        }
+        if (nameEl){ nameEl.textContent = f.name + ' (' + Math.round(f.size/1024) + ' KB)'; }
+        if (f.type && f.type.indexOf('image/') === 0){
+          var reader = new FileReader();
+          reader.onload = function(e){
+            dataUrl = e.target.result;
+            if (previewImg){ previewImg.src = dataUrl; }
+            if (preview){ preview.classList.add('show'); }
+            if (nameEl){ nameEl.classList.add('linkish'); }
+          };
+          reader.readAsDataURL(f);
+        } else {
+          if (nameEl){ nameEl.classList.remove('linkish'); }
+          if (preview){ preview.classList.remove('show'); }
+          if (previewImg){ previewImg.src = ''; }
+        }
+      });
+    }
 
   document.querySelectorAll('.receipt-thumb').forEach(function(img){
     img.addEventListener('click', function(){
@@ -320,18 +310,19 @@
 <script>
 (function(){
   function fmt(n){ return n<10?('0'+n):(''+n); }
-  var cd = document.getElementById('countdown');
-  if (cd){
-    var expiry = parseInt(cd.getAttribute('data-expiry')||'0',10);
-    var bar = document.querySelector('#countdownProgress span');
-    var total = Math.max(1, expiry - Math.floor(Date.now()/1000));
-    if (bar){ bar.style.width = '100%'; }
+    var cd = document.getElementById('countdown');
+    if (cd){
+      var expiry = parseInt(cd.getAttribute('data-expiry')||'0',10);
+      var bar = document.getElementById('countdownProgress');
+      var barSpan = bar ? bar.querySelector('span') : null;
+      var total = Math.max(1, expiry - Math.floor(Date.now()/1000));
+      if (bar && barSpan){ barSpan.style.width = '100%'; bar.setAttribute('aria-valuenow','100'); }
     function tick(){
       var now = Math.floor(Date.now()/1000);
       var s = expiry - now;
-      if (s <= 0){
-        cd.textContent = '00:00';
-        if (bar){ bar.style.width = '0%'; }
+        if (s <= 0){
+          cd.textContent = '00:00';
+          if (bar && barSpan){ barSpan.style.width = '0%'; bar.setAttribute('aria-valuenow','0'); }
         // disable payment form
         var form = document.querySelector('form[action*="/pago"]');
         if (form){
@@ -344,11 +335,15 @@
         return;
       }
       var m = Math.floor(s/60), ss = s%60;
-      cd.textContent = fmt(m)+':'+fmt(ss);
-      if (bar){ bar.style.width = ((s/total)*100)+'%'; }
-      setTimeout(tick, 1000);
-    }
-    tick();
+        cd.textContent = fmt(m)+':'+fmt(ss);
+        if (bar && barSpan){
+          var pct = (s/total)*100;
+          barSpan.style.width = pct+'%';
+          bar.setAttribute('aria-valuenow', Math.round(pct));
+        }
+        setTimeout(tick, 1000);
+      }
+      tick();
   }
 })();
 </script>
