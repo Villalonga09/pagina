@@ -46,8 +46,8 @@
   <a id="pago"></a>
 <form action="/orden/<?=$order['code']?>/pago" method="post" enctype="multipart/form-data">
     <?= CSRF::field() ?>
-<div class="form-grid" style="display:grid; grid-template-columns: 1fr 1fr; gap:16px; align-items:start">
-      <div class="col-left" style="display:grid; gap:12px">
+<div class="form-grid order-form-grid">
+      <div class="col-left order-column-left">
         <div>
           <label>Método</label>
           <select name="method">
@@ -66,7 +66,7 @@
           </div>
         </div>
       </div>
-      <div class="col-right" style="display:grid; gap:12px">
+      <div class="col-right order-column-right">
         <div id="paymentDetails" class="small payment-details payment-details--minimal" data-paybox-variant="minimal" role="region" aria-label="Detalles del pago"></div>
         <div class="uploadbox uploadbox--minimal" role="group" aria-labelledby="receiptLabel" aria-describedby="receiptHelp">
           <div id="receiptLabel" class="uploadbox__title">Comprobante</div>

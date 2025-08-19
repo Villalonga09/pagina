@@ -60,6 +60,20 @@ label{font-size:13px;color:var(--muted);margin-bottom:6px;display:block}
 .ticket input:checked + .pill{outline:2px solid var(--accent); box-shadow:0 0 0 2px rgba(125,211,252,.35) inset;}
 .form-row .form-group{margin-bottom:14px}
 
+/* Order payment form */
+.order-form-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:16px;
+  align-items:start;
+}
+.order-column-left,
+.order-column-right{
+  display:grid;
+  gap:12px;
+}
+
+
 /* ====== Raffle detail layout (clean) ====== */
 .form-row{display:grid;grid-template-columns:1.4fr .8fr;gap:24px;align-items:flex-start}
 @media (max-width: 980px){.form-row{grid-template-columns:1fr;gap:16px}}
