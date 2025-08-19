@@ -16,6 +16,10 @@ class OrderController extends Controller {
     CSRF::validate();
     $raffle_id = (int)($_POST['raffle_id'] ?? 0);
     $ticket_ids = array_map('intval', $_POST['ticket_ids'] ?? []);
+    if (!$ticket_ids) {
+      $this->view('public/error.php', ['message'=>'Debe seleccionar al menos un boleto.']);
+      return;
+    }
     $name = trim(strip_tags($_POST['buyer_name'] ?? ''));
 $email = trim($_POST['buyer_email'] ?? '');
 $phone = preg_replace('/\D+/', '', $_POST['buyer_phone'] ?? '');
