@@ -60,9 +60,7 @@ class RafflesController extends Controller {
         if (!is_dir($imgDir)) { @mkdir($imgDir, 0775, true); }
         $dest  = $imgDir . '/' . $fname;
         if (move_uploaded_file($_FILES['banner']['tmp_name'], $dest)) {
-          $old = $current['banner_path'] ?? null;
           $data['banner_path'] = '/images/' . $fname;
-          if ($old && is_string($old)) { $oldPath = PUBLIC_PATH . $old; if (is_file($oldPath)) { @unlink($oldPath); } }
         }
       }
     }
