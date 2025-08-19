@@ -150,6 +150,12 @@ a:hover{color:#1e40af}
   border-radius:999px;
 }
 
+.badge-success,.tag-success{background:var(--success);color:#fff;border:1px solid var(--success);}
+.badge-warning,.tag-warning{background:var(--warning);color:#fff;border:1px solid var(--warning);}
+.badge-danger,.tag-danger{background:var(--danger);color:#fff;border:1px solid var(--danger);}
+
+.receipt-thumb{height:40px;border-radius:6px;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,.15);}
+
 .nav, .site-header{
   background:rgba(255,255,255,.7);
   border-bottom:1px solid var(--border);
