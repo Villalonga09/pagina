@@ -12,6 +12,7 @@ class Auth {
   }
   public static function login($user) {
     self::start();
+    session_regenerate_id(true);
     $_SESSION['user'] = $user;
   }
   public static function logout() {
