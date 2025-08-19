@@ -89,7 +89,7 @@
         <div class="uploadbox" style="padding:12px; border:1px dashed #d1d5db; border-radius:12px; background:#f9fafb">
           <div style="font-weight:600; margin-bottom:6px">Comprobante</div>
           <p class="small" style="margin:6px 0 10px; opacity:.8">Adjunta la imagen del pago (JPG, PNG o WEBP, máx. 5MB).</p>
-          <input id="receiptInput" type="file" name="receipt" accept="image/*" style="display:none">
+          <input id="receiptInput" type="file" name="receipt" accept="image/*" style="display:none" required>
           <div style="display:flex; gap:10px; align-items:center">
             <label for="receiptInput" class="btn-slim" style="display:inline-block; padding:8px 12px; border:1px solid #e5e7eb; border-radius:10px; background:white; cursor:pointer">Seleccionar archivo</label>
             <span id="receiptName" class="small" style="opacity:.8">Ningún archivo seleccionado</span>
