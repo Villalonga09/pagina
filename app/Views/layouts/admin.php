@@ -9,7 +9,7 @@
 <body>
   <div class="nav">
     <div class="logo"><a href="/admin">🛠️ Admin</a></div>
-    <div><a href="/admin/rifas" class="btn">Rifas</a> <a href="/admin/ordenes" class="btn">Órdenes</a> <a href="/admin/reportes" class="btn">Reportes</a> <a href="/admin/ajustes" class="btn">Ajustes</a> <form action="/admin/logout" method="post" style="display:inline"><?php require_once APP_PATH.'/Core/CSRF.php'; echo CSRF::field(); ?><button class="btn">Salir</button></form></div>
+    <div class="nav-links"><a href="/admin/rifas" class="btn">Rifas</a> <a href="/admin/ordenes" class="btn">Órdenes</a> <a href="/admin/reportes" class="btn">Reportes</a> <a href="/admin/ajustes" class="btn">Ajustes</a> <form action="/admin/logout" method="post" style="display:inline"><?php require_once APP_PATH.'/Core/CSRF.php'; echo CSRF::field(); ?><button class="btn">Salir</button></form></div>
   </div>
   <div class="container">
     <?= $content ?>
