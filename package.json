@@ -1,0 +1,19 @@
+{
+  "name": "pagina",
+  "version": "1.0.0",
+  "description": "Proyecto listo para subir a hosting compartido (Apache + PHP 8.2 + MySQL).",
+  "type": "module",
+  "scripts": {
+    "build": "vite build",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
+    "lucide-react": "^0.344.0",
+    "htm": "^3.1.1"
+  },
+  "devDependencies": {
+    "vite": "^5.0.0"
+  }
+}
