@@ -1,3 +1,7 @@
+<?php
+require_once APP_PATH.'/Core/Auth.php';
+$user = Auth::user() ?? ['name' => 'Admin'];
+?>
 <!doctype html>
 <html lang="es">
 <head>
@@ -5,14 +9,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Admin - Rifas</title>
 <link rel="stylesheet" href="/css/app.css?v=1755259616?v=1755258034">
+<script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-  <div class="nav">
-    <div class="logo"><a href="/admin">🛠️ Admin</a></div>
-    <div class="nav-links"><a href="/admin/rifas" class="btn">Rifas</a> <a href="/admin/ordenes" class="btn">Órdenes</a> <a href="/admin/reportes" class="btn">Reportes</a> <a href="/admin/ajustes" class="btn">Ajustes</a> <form action="/admin/logout" method="post" style="display:inline"><?php require_once APP_PATH.'/Core/CSRF.php'; echo CSRF::field(); ?><button class="btn">Salir</button></form></div>
-  </div>
-  <div class="container">
-    <?= $content ?>
-  </div>
+<body class="bg-gray-900 text-gray-100">
+  <aside id="admin-sidebar" data-user='<?= json_encode($user) ?>' class="peer group fixed left-0 top-0 h-screen w-20 hover:w-64 bg-gray-900 border-r border-gray-800 transition-all duration-300 overflow-hidden flex flex-col"></aside>
+  <main class="ml-20 p-4 transition-all duration-300 peer-hover:ml-64">
+    <div class="container">
+      <?= $content ?>
+    </div>
+  </main>
+  <script type="module" src="/js/admin-sidebar.js"></script>
 </body>
 </html>
