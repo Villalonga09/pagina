@@ -1,6 +1,12 @@
 import React from "https://esm.sh/react@18";
 import { createRoot } from "https://esm.sh/react-dom@18/client";
-import { Ticket, ShoppingCart, FileText, Settings, LogOut } from "https://esm.sh/lucide-react@latest";
+import {
+  Ticket,
+  ShoppingCart,
+  FileText,
+  Settings,
+  LogOut,
+} from "https://esm.sh/lucide-react@latest?deps=react@18";
 import htm from "https://esm.sh/htm@3?deps=react@18";
 
 const html = htm.bind(React.createElement);
