@@ -11,7 +11,7 @@ import htm from "htm";
 
 const html = htm.bind(React.createElement);
 
-function Sidebar({ user }) {
+function Sidebar({ user, logo }) {
   const menu = [
     { href: "/admin/rifas", label: "Rifas", icon: Ticket },
     { href: "/admin/ordenes", label: "Órdenes", icon: ShoppingCart },
@@ -24,7 +24,7 @@ function Sidebar({ user }) {
   return html`
     <div class="flex flex-col h-full">
       <div class="flex items-center justify-center h-16 border-b border-gray-800">
-        <img src="/images/logo.svg" alt="Logo" class="w-10 h-10" />
+        <img src=${logo ? `/file/site/${logo}` : "/images/logo.svg"} alt="Logo" class="w-10 h-10" />
       </div>
       <div class="flex flex-col items-center mt-4">
         <img
@@ -65,4 +65,5 @@ function Sidebar({ user }) {
 
 const container = document.getElementById("admin-sidebar");
 const user = JSON.parse(container.dataset.user || "{}");
-createRoot(container).render(html`<${Sidebar} user=${user} />`);
+const logo = container.dataset.logo || "";
+createRoot(container).render(html`<${Sidebar} user=${user} logo=${logo} />`);
