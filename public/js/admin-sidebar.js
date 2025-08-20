@@ -64,6 +64,23 @@ function Sidebar({ user, logo }) {
 }
 
 const container = document.getElementById("admin-sidebar");
-const user = JSON.parse(container.dataset.user || "{}");
-const logo = container.dataset.logo || "";
-createRoot(container).render(html`<${Sidebar} user=${user} logo=${logo} />`);
+const root = createRoot(container);
+
+function render() {
+  const user = JSON.parse(container.dataset.user || "{}");
+  const logo = container.dataset.logo || "";
+  root.render(html`<${Sidebar} user=${user} logo=${logo} />`);
+}
+
+render();
+
+// Optional hot update: re-render when the logo dataset attribute changes
+const observer = new MutationObserver((mutations) => {
+  for (const m of mutations) {
+    if (m.type === "attributes" && m.attributeName === "data-logo") {
+      render();
+    }
+  }
+});
+
+observer.observe(container, { attributes: true });

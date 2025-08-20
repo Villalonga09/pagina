@@ -75,6 +75,13 @@ Ver `database.sql`. Se crean 2 rifas de ejemplo. Para cada rifa nueva, el sistem
 - UI tipo glassmorphism con CSS vanilla (`public/css/app.css`).
 - Transiciones y hover suaves.
 
+## Build del sidebar de admin
+El sidebar del panel de administración está escrito en React y se empaqueta con [Vite](https://vitejs.dev/).
+
+- Fuente principal: `public/js/admin-sidebar.js`.
+- Comando de compilación: `npm run build` genera `public/js/admin-sidebar.bundle.js`.
+- El bundle incluye todas las dependencias, por lo que puede cargarse directamente sin import maps.
+
 ## Ajuste de tasa BCV
 - En `/admin/ajustes` puedes guardar manualmente la tasa.
 - El botón "Actualizar desde API" intenta leer `BCV_SOURCE_URL`; si falla, mantiene el valor actual.
