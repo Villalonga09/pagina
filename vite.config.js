@@ -6,8 +6,9 @@ export default defineConfig({
     emptyOutDir: false,
     lib: {
       entry: 'public/js/admin-sidebar.js',
-      fileName: () => 'admin-sidebar.bundle',
-      formats: ['es']
+      name: 'AdminSidebar',
+      fileName: () => 'admin-sidebar.bundle.js',
+      formats: ['iife']
     },
     rollupOptions: {
       external: [],
