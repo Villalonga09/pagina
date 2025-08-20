@@ -18,6 +18,6 @@ $user = Auth::user() ?? ['name' => 'Admin'];
       <?= $content ?>
     </div>
   </main>
-  <script type="module" src="/js/admin-sidebar.js"></script>
+  <script type="module" src="/js/admin-sidebar.bundle.js"></script>
 </body>
 </html>
