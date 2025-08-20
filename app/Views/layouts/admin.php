@@ -12,7 +12,17 @@ $user = Auth::user() ?? ['name' => 'Admin'];
 <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-900 text-gray-100">
-  <aside id="admin-sidebar" data-user='<?= json_encode($user) ?>' class="peer group fixed left-0 top-0 h-screen w-20 hover:w-64 bg-gray-900 border-r border-gray-800 transition-all duration-300 overflow-hidden flex flex-col"></aside>
+  <aside id="admin-sidebar" data-user='<?= json_encode($user) ?>' class="peer group fixed left-0 top-0 h-screen w-20 hover:w-64 bg-gray-900 border-r border-gray-800 transition-all duration-300 overflow-hidden flex flex-col">
+    <noscript>
+      <nav class="p-4">
+        <ul class="space-y-2">
+          <li><a href="/admin/rifas" class="block py-2">Rifas</a></li>
+          <li><a href="/admin/ordenes" class="block py-2">Órdenes</a></li>
+          <li><a href="/admin/logout" class="block py-2">Salir</a></li>
+        </ul>
+      </nav>
+    </noscript>
+  </aside>
   <main class="ml-20 p-4 transition-all duration-300 peer-hover:ml-64">
     <div class="container">
       <?= $content ?>
