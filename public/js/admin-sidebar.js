@@ -20,6 +20,7 @@ function Sidebar({ user }) {
     { href: "/admin/logout", label: "Salir", icon: LogOut },
   ];
   const pathname = window.location.pathname;
+
   return html`
     <div class="flex flex-col h-full">
       <div class="flex items-center justify-center h-16 border-b border-gray-800">
@@ -41,6 +42,7 @@ function Sidebar({ user }) {
           const active = pathname.startsWith(item.href);
           return html`
             <a
+              key=${item.href}
               href=${item.href}
               class=${`flex items-center px-4 py-3 my-1 rounded-md transition-colors duration-200 focus:outline-none focus-visible:ring-2 ring-offset-2 ring-offset-gray-900 ${
                 active
@@ -64,4 +66,3 @@ function Sidebar({ user }) {
 const container = document.getElementById("admin-sidebar");
 const user = JSON.parse(container.dataset.user || "{}");
 createRoot(container).render(html`<${Sidebar} user=${user} />`);
-
